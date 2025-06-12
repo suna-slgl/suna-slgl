@@ -1,11 +1,9 @@
 <section align="center">
-<br>
 <div class="markdown-heading" dir="auto">
   <h2 align="center" class="heading-element" dir="auto">💫 About Me</h2>
   <a id="user-content--languages-and-tools" class="anchor" aria-label="Permalink: 💫 About Me" href="#-languages-and-tools"></a>
   <p dir="auto"> My name is Suna and I'm a computer engineer student, from Turkey. <p/>
 </div>
-<br/>
 </section>
 
 
@@ -34,20 +32,6 @@
 </p>
 </section>
 
-
-<section align="center"> 
-<br>
-  <div class="markdown-heading" dir="auto">
-    <h2 class="heading-element" dir="auto">🫱🏼‍🫲🏼 Connect with me</h2>
-    <a id="user-content--connect-with-me" class="anchor" aria-label="Permalink: 🫱🏼‍🫲🏼 Connect with me" href="#-connect-with-me"></a>
-  </div>
-  <p dir="auto">
-    <a href="https://www.linkedin.com/in/suna-s/" rel="nofollow"><img src="https://img.shields.io/badge/LinkedIn-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
-    <a href="https://medium.com/@suna_" rel="nofollow"><img src="https://img.shields.io/badge/Medium-12100E?style=for-the-badge&logo=medium&logoColor=white" alt="Medium" /></a>
-    <a href="mailto:sunasalgali@outlook.com" rel="nofollow"><img src="https://img.shields.io/badge/Email-0078D4?style=for-the-badge&logo=microsoft-outlook&logoColor=white" alt="Email" /></a>
-  </p>
-<br/>
-</section>
 
 
 <section align="center">
@@ -79,7 +63,19 @@
 </markdown-accessiblity-table>
 
 
-
+<section align="center"> 
+<br>
+  <div class="markdown-heading" dir="auto">
+    <h2 class="heading-element" dir="auto">🫱🏼‍🫲🏼 Connect with me</h2>
+    <a id="user-content--connect-with-me" class="anchor" aria-label="Permalink: 🫱🏼‍🫲🏼 Connect with me" href="#-connect-with-me"></a>
+  </div>
+  <p dir="auto">
+    <a href="https://www.linkedin.com/in/suna-s/" rel="nofollow"><img src="https://img.shields.io/badge/LinkedIn-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
+    <a href="https://medium.com/@suna_" rel="nofollow"><img src="https://img.shields.io/badge/Medium-12100E?style=for-the-badge&logo=medium&logoColor=white" alt="Medium" /></a>
+    <a href="mailto:sunasalgali@outlook.com" rel="nofollow"><img src="https://img.shields.io/badge/Email-0078D4?style=for-the-badge&logo=microsoft-outlook&logoColor=white" alt="Email" /></a>
+  </p>
+<br/>
+</section>
 
 
 <!-- Proudly created with GPRM ( https://gprm.itsvg.in ) -->
