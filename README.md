@@ -37,31 +37,24 @@
 
 <section align="center">
 <br>
-<div class="markdown-heading" dir="auto">
+<div class="markdown-heading" dir="auto" align-items: center;>
   <h2 align="center" class="heading-element" dir="auto">📊 GitHub Stats</h2>
   <a id="user-content--languages-and-tools" class="anchor" aria-label="Permalink: 📊 GitHub Stats" href="#-languages-and-tools"></a>
 </div>
-<br/>
+<br>
+  <a href="https://git.io/streak-stats">
+    <img alt="Streak" src="https://streak-stats.vercel.app?user=suna-slgl&theme=tokyonight&hide_border=true&background=FFFFFF00&date_format=j%20M%5B%20Y%5D&" height="200rem" />
+  </a>
+  <br>
+ 
+  <img alt="Stats" src="http://github-readme-stats.vercel.app/api?username=suna-slgl&theme=tokyonight&hide_border=true&bg_color=00000000" height="202rem"/>
+  <img alt="Most Used Languages" src="http://github-readme-stats.vercel.app/api/top-langs/?username=suna-slgl&theme=tokyonight&hide_border=true&bg_color=00000000" height="184rem"/>
+  
+  
 </section>
 
-<markdown-accessiblity-table data-catalyst="">
-<table>
-<tbody>
-  <tr>
-    <td>
-      <a target="_blank" rel="noopener noreferrer nofollow" href="https://github-readme-stats.vercel.app/api?username=suna-slgl&show_icons=true&theme=tokyonight&hide_border=true&include_all_commits=false&count_private=false">
-        <img src="https://github-readme-stats.vercel.app/api?username=suna-slgl&show_icons=true&theme=tokyonight&hide_border=true&include_all_commits=false&count_private=false" alt="GitHub Stats" title="GitHub Stats" style="max-width: 100%;" />
-      </a>
-    </td>
-    <td>
-      <a target="_blank" rel="noopener noreferrer nofollow" href="https://github-readme-streak-stats.herokuapp.com/?user=suna-slgl&theme=tokyonight&hide_border=true">
-        <img src="https://github-readme-streak-stats.herokuapp.com/?user=suna-slgl&theme=tokyonight&hide_border=true" alt="GitHub Streak" title="GitHub Streak" style="max-width: 100%;" />
-      </a>
-    </td>
-  </tr>
-</tbody>
-</table>
-</markdown-accessiblity-table>
+
+
 
 
 <section align="center"> 
