@@ -47,8 +47,8 @@
   </a>
   <br>
  
-  <img alt="Stats" src="http://github-readme-stats.vercel.app/api?username=suna-slgl&theme=tokyonight&hide_border=true&bg_color=00000000" height="202rem"/>
-  <img alt="Most Used Languages" src="http://github-readme-stats.vercel.app/api/top-langs/?username=suna-slgl&theme=tokyonight&hide_border=true&bg_color=00000000" height="184rem"/>
+  <img alt="Stats" src="http://github-readme-stats.vercel.app/api?username=suna-slgl&theme=tokyonight&hide_border=true&bg_color=00000000" height="205rem"/>
+  <img alt="Most Used Languages" src="https://github-readme-stats.vercel.app/api/top-langs/?username=suna-slgl&langs_count=6&theme=tokyonight&hide_border=true&bg_color=00000000" height="205rem"/>
   
   
 </section>
