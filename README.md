@@ -1,9 +1,9 @@
 <section align="center">
 <div class="markdown-heading" dir="auto">
   <h2 align="center" class="heading-element" dir="auto">💫 About Me</h2>
-  <a id="user-content--languages-and-tools" class="anchor" aria-label="Permalink: 💫 About Me" href="#-languages-and-tools"></a>
-  <p dir="auto"> My name is Suna and I'm a computer engineer student<p/>
-  <p dir="auto"> I'm sharing my own learning process. <p/>
+  <a id="user-content--about-me" class="anchor" aria-label="Permalink: 💫 About Me" href="#-about-me"></a>
+  <p dir="auto"> My name is Suna and I'm a computer engineer student</p>
+  <p dir="auto"> I'm sharing my own learning process.</p>
 </div>
 </section>
 
@@ -17,7 +17,7 @@
 <br>
 <p dir="auto">
   <a href="https://www.python.org/" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" /></a>
-  <a href="https://www.microsoft.com/en-us/sql-server" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/Microsoft_SQL_Server-CC2927?style=for-the-badge&logo=microsoft-sql-server&logoColor=white" alt="Microsoft SQL Server" /></a>
+  <a href="https://www.microsoft.com/en-us/sql-server" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/Microsoft_SQL_Server-CC2927?style=for-the-badge&logo=microsoftsqlserver&logoColor=white" alt="Microsoft SQL Server" /></a>
   <a href="https://learn.microsoft.com/en-us/dotnet/csharp/" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=csharp&logoColor=white" alt="C#" /></a>
   <a href="https://isocpp.org/" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/C++-00599C?style=for-the-badge&logo=cplusplus&logoColor=white" alt="C++" /></a>
   <a href="https://flutter.dev/" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white" alt="Flutter" /></a>
@@ -34,27 +34,20 @@
 </section>
 
 
-
 <section align="center">
 <br>
-<div class="markdown-heading" dir="auto" align-items: center;>
+<div class="markdown-heading" dir="auto">
   <h2 align="center" class="heading-element" dir="auto">📊 GitHub Stats</h2>
-  <a id="user-content--languages-and-tools" class="anchor" aria-label="Permalink: 📊 GitHub Stats" href="#-languages-and-tools"></a>
+  <a id="user-content--github-stats" class="anchor" aria-label="Permalink: 📊 GitHub Stats" href="#-github-stats"></a>
 </div>
 <br>
-  <a href="https://git.io/streak-stats">
-    <img alt="Streak" src="https://streak-stats.vercel.app?user=suna-slgl&theme=tokyonight&hide_border=true&background=FFFFFF00&date_format=j%20M%5B%20Y%5D&" height="200rem" />
-  </a>
-  <br>
- 
-  <img alt="Stats" src="http://github-readme-stats.vercel.app/api?username=suna-slgl&theme=tokyonight&hide_border=true&bg_color=00000000" height="205rem"/>
-  <img alt="Most Used Languages" src="https://github-readme-stats.vercel.app/api/top-langs/?username=suna-slgl&langs_count=6&theme=tokyonight&hide_border=true&bg_color=00000000" height="205rem"/>
-  
-  
+<a href="https://git.io/streak-stats">
+  <img alt="Streak" src="https://streak-stats.vercel.app?user=suna-slgl&theme=tokyonight&hide_border=true&background=FFFFFF00&date_format=j%20M%5B%20Y%5D" height="200" />
+</a>
+<br>
+<img alt="Stats" src="https://github-readme-stats.vercel.app/api?username=suna-slgl&theme=tokyonight&hide_border=true&bg_color=00000000" height="205" />
+<img alt="Most Used Languages" src="https://github-readme-stats.vercel.app/api/top-langs/?username=suna-slgl&layout=compact&langs_count=6&theme=tokyonight&hide_border=true&bg_color=00000000" height="205" />
 </section>
-
-
-
 
 
 <section align="center"> 
@@ -70,6 +63,5 @@
   </p>
 <br/>
 </section>
-
 
 <!-- Proudly created with GPRM ( https://gprm.itsvg.in ) -->
