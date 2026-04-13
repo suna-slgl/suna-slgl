@@ -30,12 +30,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           USERNAME: suna-slgl
-          THEME: tokyo-night
 
       - name: Copy generated cards into assets
         run: |
           set -e
-          SRC="profile-summary-card-output/tokyo-night"
+          OUT="profile-summary-card-output"
+          THEME_DIR="$(ls -1 "$OUT" | head -n 1)"
+          SRC="$OUT/$THEME_DIR"
+
+          echo "Using theme dir: $SRC"
           cp "$SRC/0-profile-details.svg" assets/github-stats.svg
           cp "$SRC/2-most-commit-language.svg" assets/top-langs.svg
 
