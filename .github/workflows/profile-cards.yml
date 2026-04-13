@@ -1,0 +1,53 @@
+name: Update profile cards
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: profile-cards
+  cancel-in-progress: true
+
+jobs:
+  build:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare folders
+        run: mkdir -p assets
+
+      - name: Generate cards (SVG)
+        uses: vn7n24fzkq/github-profile-summary-cards@release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          USERNAME: suna-slgl
+          THEME: tokyo-night
+
+      - name: Copy generated cards into assets
+        run: |
+          set -e
+          SRC="profile-summary-card-output/tokyo-night"
+          cp "$SRC/0-profile-details.svg" assets/github-stats.svg
+          cp "$SRC/2-most-commit-language.svg" assets/top-langs.svg
+
+      - name: Commit and push if changed
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add assets/github-stats.svg assets/top-langs.svg
+          if git diff --cached --quiet; then
+            echo "No changes."
+            exit 0
+          fi
+          git commit -m "chore: update profile cards"
+          git push
