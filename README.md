@@ -45,8 +45,8 @@
   <img alt="Streak" src="https://streak-stats.vercel.app?user=suna-slgl&theme=tokyonight&hide_border=true&background=FFFFFF00&date_format=j%20M%5B%20Y%5D" height="200" />
 </a>
 <br>
-<img alt="Stats" src="https://github-readme-stats.vercel.app/api?username=suna-slgl&theme=tokyonight&hide_border=true&bg_color=00000000&rank_icon=github&cache_seconds=86400&v=2" height="205" />
-<img alt="Most Used Languages" src="https://github-readme-stats.vercel.app/api/top-langs/?username=suna-slgl&layout=compact&langs_count=6&theme=tokyonight&hide_border=true&bg_color=00000000&cache_seconds=86400&v=2" height="205" />
+<img alt="Stats" src="https://github-readme-stats.vercel.app/api?username=suna-slgl&theme=tokyonight&hide_border=true&bg_color=00000000&rank_icon=github&cache_seconds=86400&v=3" height="205" />
+<img alt="Most Used Languages" src="https://github-readme-stats.vercel.app/api/top-langs/?username=suna-slgl&layout=compact&langs_count=6&theme=tokyonight&hide_border=true&bg_color=00000000&cache_seconds=86400&v=3" height="205" />
 </section>
 
 
