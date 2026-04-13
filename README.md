@@ -2,7 +2,7 @@
 <div class="markdown-heading" dir="auto">
   <h2 align="center" class="heading-element" dir="auto">💫 About Me</h2>
   <a id="user-content--about-me" class="anchor" aria-label="Permalink: 💫 About Me" href="#-about-me"></a>
-  <p dir="auto"> My name is Suna and I'm a computer engineer student</p>
+  <p dir="auto"> My name is Suna and I'm a computer engineer student.</p>
   <p dir="auto"> I'm sharing my own learning process.</p>
 </div>
 </section>
