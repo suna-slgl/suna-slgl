@@ -41,12 +41,12 @@
   <a id="user-content--github-stats" class="anchor" aria-label="Permalink: 📊 GitHub Stats" href="#-github-stats"></a>
 </div>
 <br>
-<a href="https://git.io/streak-stats">
+<!--<a href="https://git.io/streak-stats">
   <img alt="Streak" src="https://streak-stats.vercel.app?user=suna-slgl&theme=tokyonight&hide_border=true&background=FFFFFF00&date_format=j%20M%5B%20Y%5D" height="200" />
 </a>
 <br>
 <img alt="Stats" src="assets/github-stats.svg" height="205" />
-<img alt="Most Used Languages" src="assets/top-langs.svg" height="205" />
+<img alt="Most Used Languages" src="assets/top-langs.svg" height="205" /> -->
 </section>
 
 
