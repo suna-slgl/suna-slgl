@@ -32,7 +32,7 @@
   <a href="https://git-scm.com/" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" alt="Git" /></a>
 </p>
 </section>
--->
+
 
 <section align="center">
   <h2 align="center">Tech Radar</h2>
@@ -57,7 +57,7 @@
 </a>
 <br>
 </section>
-
+-->
 
 <section align="center"> 
 <br>
