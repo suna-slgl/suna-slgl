@@ -35,22 +35,12 @@
 -->
 
 <section align="center">
-  <h2 align="center">Most Used Languages</h2>
-  <br>
+  <h2 align="center">Tech Radar</h2>
+
   <img
-    src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=suna-slgl&theme=tokyonight"
-    alt="GitHub Profile Summary"
-  />
-  <br><br>
-  <img
-    src="https://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=suna-slgl&theme=tokyonight"
-    alt="Repos per Language"
-    height="170"
-  />
-  <img
-    src="https://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=suna-slgl&theme=tokyonight"
-    alt="Most Commit Language"
-    height="170"
+    src="./assets/tech-radar.svg"
+    width="500"
+    alt="Tech Radar"
   />
 </section>
 
