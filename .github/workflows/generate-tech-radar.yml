@@ -2,6 +2,9 @@ name: Generate Tech Radar
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 permissions:
   contents: write
