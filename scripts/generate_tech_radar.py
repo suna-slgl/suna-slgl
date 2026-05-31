@@ -1,11 +1,11 @@
 import os
 import re
+import json
 import requests
 import numpy as np
 import matplotlib.pyplot as plt
 from collections import Counter
 
-USERNAME = os.getenv("GITHUB_USERNAME", "suna-slgl")
 TOKEN = os.getenv("GH_TOKEN")
 
 if not TOKEN:
@@ -16,16 +16,27 @@ HEADERS = {
     "Accept": "application/vnd.github+json",
 }
 
+THEME = {
+    "background": "#1a1b27",
+    "grid": "#414868",
+    "text": "#c0caf5",
+    "primary": "#7aa2f7",
+}
+
 TECH_NORMALIZATION = {
-    # Python ecosystem
-    "fastapi": "FastAPI",
-    "django": "Django",
-    "flask": "Flask",
-    "sqlalchemy": "SQLAlchemy",
+    # Languages
+    "python": "Python",
+    "dart": "Dart",
+    "typescript": "TypeScript",
+    "javascript": "JavaScript",
 
     # Flutter
     "flutter": "Flutter",
-    "dart": "Dart",
+
+    # Backend
+    "fastapi": "FastAPI",
+    "django": "Django",
+    "flask": "Flask",
 
     # Firebase
     "firebase": "Firebase",
@@ -53,42 +64,41 @@ TECH_NORMALIZATION = {
     "sentence-transformers": "Transformers",
     "bert": "Transformers",
 
-    # DB
+    # Databases
     "postgres": "PostgreSQL",
     "postgresql": "PostgreSQL",
-    "sqlite": "SQLite",
     "mysql": "MySQL",
+    "sqlite": "SQLite",
+    "sqlalchemy": "SQLAlchemy",
 
-    # JS
-    "typescript": "TypeScript",
-    "javascript": "JavaScript",
+    # JS ecosystem
     "react": "React",
     "next": "Next.js",
     "node": "Node.js",
     "express": "Express",
 
-    # Cloud / DevOps
+    # DevOps
     "docker": "Docker",
     "kubernetes": "Kubernetes",
 }
-THEME = {
-    "background": "#1a1b27",
-    "grid": "#414868",
-    "text": "#c0caf5",
-    "primary": "#7aa2f7",
-}
+
 
 def github_get(url):
     r = requests.get(url, headers=HEADERS, timeout=30)
     r.raise_for_status()
     return r.json()
 
+
 def get_repositories():
     repos = []
     page = 1
 
     while True:
-        url = f"https://api.github.com/user/repos?visibility=all&affiliation=owner&per_page=100&page={page}"
+        url = (
+            "https://api.github.com/user/repos"
+            f"?visibility=all&affiliation=owner&per_page=100&page={page}"
+        )
+
         data = github_get(url)
 
         if not data:
@@ -99,11 +109,39 @@ def get_repositories():
 
     return repos
 
-def get_repo_languages(repo_full_name):
-    url = f"https://api.github.com/repos/{repo_full_name}/languages"
-    return github_get(url)
 
-def get_repo_text(repo_full_name):
+def get_repo_languages(full_name):
+    try:
+        return github_get(
+            f"https://api.github.com/repos/{full_name}/languages"
+        )
+    except:
+        return {}
+
+
+def get_file_content(full_name, path):
+    try:
+        data = github_get(
+            f"https://api.github.com/repos/{full_name}/contents/{path}"
+        )
+
+        download_url = data.get("download_url")
+
+        if not download_url:
+            return ""
+
+        r = requests.get(download_url, headers=HEADERS, timeout=30)
+
+        if r.status_code == 200:
+            return r.text.lower()
+
+    except:
+        pass
+
+    return ""
+
+
+def collect_repo_text(full_name):
     files = [
         "README.md",
         "requirements.txt",
@@ -114,119 +152,183 @@ def get_repo_text(repo_full_name):
         "Dockerfile",
     ]
 
-    text = ""
+    combined = ""
 
-    for file_path in files:
-        url = f"https://api.github.com/repos/{repo_full_name}/contents/{file_path}"
-        r = requests.get(url, headers=HEADERS, timeout=30)
+    for file in files:
+        combined += "\n" + get_file_content(full_name, file)
 
-        if r.status_code != 200:
+    return combined.lower()
+
+
+def score_languages(scores, languages):
+    total_bytes = sum(languages.values())
+
+    if total_bytes == 0:
+        return
+
+    for language, bytes_used in languages.items():
+        normalized = language.lower()
+
+        if normalized not in TECH_NORMALIZATION:
             continue
 
-        data = r.json()
-        download_url = data.get("download_url")
+        tech = TECH_NORMALIZATION[normalized]
 
-        if not download_url:
-            continue
+        percentage = bytes_used / total_bytes
 
-        raw = requests.get(download_url, headers=HEADERS, timeout=30)
+        scores[tech] += percentage * 40
 
-        if raw.status_code == 200:
-            text += "\n" + raw.text.lower()
 
-    return text
+def score_dependencies(scores, text):
+    for keyword, tech in TECH_NORMALIZATION.items():
 
-def score_technologies():
+        matches = len(
+            re.findall(
+                rf"\b{re.escape(keyword.lower())}\b",
+                text
+            )
+        )
+
+        if matches:
+            scores[tech] += matches * 8
+
+
+def analyze_repositories():
     repos = get_repositories()
     scores = Counter()
 
     for repo in repos:
+
         if repo.get("fork"):
             continue
 
         full_name = repo["full_name"]
-        repo_name = repo["name"].lower()
-        description = (repo.get("description") or "").lower()
+
+        description = (
+            repo.get("description") or ""
+        ).lower()
 
         languages = get_repo_languages(full_name)
-        repo_text = get_repo_text(full_name)
 
-        searchable = f"{repo_name}\n{description}\n{repo_text}"
+        score_languages(scores, languages)
 
-        for language, byte_count in languages.items():
-            if language in TECH_KEYWORDS:
-                scores[language] += max(1, byte_count // 1000)
+        text = collect_repo_text(full_name)
 
-        for tech, keywords in TECH_KEYWORDS.items():
-            for keyword in keywords:
-                if re.search(re.escape(keyword.lower()), searchable):
-                    scores[tech] += 5
+        searchable = f"{description}\n{text}"
+
+        score_dependencies(scores, searchable)
 
     return scores
 
-def normalize_scores(scores, max_items=8):
+
+def normalize_scores(scores, top_n=10):
+
     if not scores:
         return {
-            "Python": 1,
-            "Dart": 1,
-            "Flutter": 1,
-            "Firebase": 1,
-            "Computer Vision": 1,
-            "NLP": 1,
+            "Python": 10,
+            "Flutter": 8,
+            "FastAPI": 7,
         }
 
-    selected = scores.most_common(max_items)
-    max_score = max(score for _, score in selected)
+    selected = scores.most_common(top_n)
+
+    max_score = max(v for _, v in selected)
 
     return {
-        tech: max(1, round((score / max_score) * 10))
+        tech: round((score / max_score) * 10, 1)
         for tech, score in selected
     }
 
+
 def create_radar_chart(data):
+
     labels = list(data.keys())
     values = list(data.values())
 
+    labels += labels[:1]
     values += values[:1]
 
-    angles = np.linspace(0, 2 * np.pi, len(labels), endpoint=False).tolist()
+    angles = np.linspace(
+        0,
+        2 * np.pi,
+        len(labels),
+        endpoint=False
+    ).tolist()
+
     angles += angles[:1]
 
-    plt.figure(figsize=(7, 7), facecolor=THEME["background"])
+    plt.figure(
+        figsize=(8, 8),
+        facecolor=THEME["background"]
+    )
+
     ax = plt.subplot(111, polar=True)
+
     ax.set_facecolor(THEME["background"])
 
-    ax.plot(angles, values, linewidth=2, color=THEME["primary"])
-    ax.fill(angles, values, alpha=0.25, color=THEME["primary"])
+    ax.plot(
+        angles,
+        values,
+        linewidth=2.5,
+        color=THEME["primary"]
+    )
+
+    ax.fill(
+        angles,
+        values,
+        alpha=0.25,
+        color=THEME["primary"]
+    )
 
     ax.set_xticks(angles[:-1])
-    ax.set_xticklabels(labels, color=THEME["text"], fontsize=11)
 
-    ax.set_yticks([2, 4, 6, 8, 10])
-    ax.set_yticklabels(["2", "4", "6", "8", "10"], color=THEME["grid"], fontsize=9)
+    ax.set_xticklabels(
+        labels[:-1],
+        color=THEME["text"],
+        fontsize=11
+    )
+
     ax.set_ylim(0, 10)
 
-    ax.spines["polar"].set_color(THEME["grid"])
-    ax.grid(color=THEME["grid"], alpha=0.6)
+    ax.grid(
+        color=THEME["grid"],
+        alpha=0.6
+    )
+
+    ax.spines["polar"].set_color(
+        THEME["grid"]
+    )
 
     ax.set_title(
         "Tech Radar",
         color=THEME["text"],
         fontsize=18,
         fontweight="bold",
-        pad=24,
+        pad=25,
     )
 
-    os.makedirs("assets", exist_ok=True)
+    os.makedirs(
+        "assets",
+        exist_ok=True
+    )
 
     plt.savefig(
         "assets/tech-radar.svg",
         format="svg",
         facecolor=THEME["background"],
-        bbox_inches="tight",
+        bbox_inches="tight"
     )
 
+
 if __name__ == "__main__":
-    scores = score_technologies()
-    radar_data = normalize_scores(scores)
-    create_radar_chart(radar_data)
+
+    scores = analyze_repositories()
+
+    radar = normalize_scores(
+        scores,
+        top_n=10
+    )
+
+    create_radar_chart(radar)
+
+    print(radar)
