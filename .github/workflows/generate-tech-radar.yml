@@ -1,1 +1,39 @@
+name: Generate Tech Radar
 
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  radar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install matplotlib numpy requests
+
+      - name: Run radar generator
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_USERNAME: suna-slgl
+        run: |
+          python scripts/generate_tech_radar.py
+
+      - name: Commit generated SVG
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add assets/tech-radar.svg
+          git commit -m "update tech radar" || echo "nothing to commit"
+          git push
