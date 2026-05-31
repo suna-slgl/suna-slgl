@@ -16,19 +16,61 @@ HEADERS = {
     "Accept": "application/vnd.github+json",
 }
 
-TECH_KEYWORDS = {
-    "Python": ["python", ".py", "fastapi", "flask", "django"],
-    "Dart": ["dart", ".dart"],
-    "Flutter": ["flutter", "pubspec.yaml"],
-    "JavaScript": ["javascript", ".js", "node", "express"],
-    "TypeScript": ["typescript", ".ts", ".tsx"],
-    "Firebase": ["firebase", "firestore", "firebase.json"],
-    "Computer Vision": ["opencv", "yolo", "resnet", "torchvision", "cv2"],
-    "NLP": ["spacy", "nltk", "transformers", "bert", "nlp"],
-    "SQL": ["sql", "postgres", "mysql", "sqlite"],
-    "HTML/CSS": ["html", "css", ".html", ".css"],
-}
+TECH_NORMALIZATION = {
+    # Python ecosystem
+    "fastapi": "FastAPI",
+    "django": "Django",
+    "flask": "Flask",
+    "sqlalchemy": "SQLAlchemy",
 
+    # Flutter
+    "flutter": "Flutter",
+    "dart": "Dart",
+
+    # Firebase
+    "firebase": "Firebase",
+    "firebase_core": "Firebase",
+    "firebase_auth": "Firebase",
+    "cloud_firestore": "Firebase",
+    "firestore": "Firebase",
+
+    # CV
+    "opencv": "OpenCV",
+    "opencv-python": "OpenCV",
+    "opencv-contrib-python": "OpenCV",
+    "cv2": "OpenCV",
+
+    "ultralytics": "YOLO",
+    "yolo": "YOLO",
+    "yolov8": "YOLO",
+
+    "torch": "PyTorch",
+    "torchvision": "PyTorch",
+
+    # NLP
+    "spacy": "spaCy",
+    "transformers": "Transformers",
+    "sentence-transformers": "Transformers",
+    "bert": "Transformers",
+
+    # DB
+    "postgres": "PostgreSQL",
+    "postgresql": "PostgreSQL",
+    "sqlite": "SQLite",
+    "mysql": "MySQL",
+
+    # JS
+    "typescript": "TypeScript",
+    "javascript": "JavaScript",
+    "react": "React",
+    "next": "Next.js",
+    "node": "Node.js",
+    "express": "Express",
+
+    # Cloud / DevOps
+    "docker": "Docker",
+    "kubernetes": "Kubernetes",
+}
 THEME = {
     "background": "#1a1b27",
     "grid": "#414868",
