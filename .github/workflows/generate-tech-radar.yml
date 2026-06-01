@@ -1,6 +1,12 @@
 name: Generate Tech Radar
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/generate-tech-radar.yml"
+      - "scripts/generate_tech_radar.py"
   schedule:
     - cron: "0 3 * * *"
   workflow_dispatch:
