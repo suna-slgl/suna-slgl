@@ -23,26 +23,26 @@
   <line x1="380" y1="340" x2="156.5" y2="412.62" stroke="#629cf4" stroke-width="0.8" opacity="0.38"/>
   <line x1="380" y1="340" x2="156.5" y2="267.38" stroke="#629cf4" stroke-width="0.8" opacity="0.38"/>
   <line x1="380" y1="340" x2="241.87" y2="149.88" stroke="#629cf4" stroke-width="0.8" opacity="0.38"/>
-  <polygon points="380.0,105.0 490.5,187.9 514.1,296.43 502.92,379.94 438.01,419.85 380.0,363.5 368.95,355.21 366.59,344.36 368.83,336.37 374.47,332.4" fill="#29bda3" fill-opacity="0.26" stroke="#29bda3" stroke-width="2.4" filter="url(#softglow)"/>
+  <polygon points="380.0,105.0 501.55,172.7 576.68,276.1 491.75,376.31 432.49,412.25 380.0,429.3 345.47,387.53 324.13,358.15 324.13,321.85 345.47,292.47" fill="#29bda3" fill-opacity="0.26" stroke="#29bda3" stroke-width="2.4" filter="url(#softglow)"/>
   <circle cx="380.0" cy="105.0" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
-  <text x="380.0" y="44.0" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">TypeScript</text>
-  <circle cx="490.5" cy="187.9" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
+  <text x="380.0" y="44.0" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">Python</text>
+  <circle cx="501.55" cy="172.7" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
   <text x="552.22" y="99.96" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">HTML</text>
-  <circle cx="514.1" cy="296.43" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
-  <text x="658.66" y="246.46" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">Python</text>
-  <circle cx="502.92" cy="379.94" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
-  <text x="658.66" y="427.54" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">Dart</text>
-  <circle cx="438.01" cy="419.85" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
-  <text x="552.22" y="574.04" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">C#</text>
-  <circle cx="380.0" cy="363.5" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
-  <text x="380.0" y="630.0" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">C++</text>
-  <circle cx="368.95" cy="355.21" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
-  <text x="207.78" y="574.04" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">CSS</text>
-  <circle cx="366.59" cy="344.36" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
-  <text x="101.34" y="427.54" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">CMake</text>
-  <circle cx="368.83" cy="336.37" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
-  <text x="101.34" y="246.46" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">Swift</text>
-  <circle cx="374.47" cy="332.4" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
-  <text x="207.78" y="99.96" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">Dockerfile</text>
+  <circle cx="576.68" cy="276.1" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
+  <text x="658.66" y="246.46" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">CSS</text>
+  <circle cx="491.75" cy="376.31" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
+  <text x="658.66" y="427.54" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">JavaScript</text>
+  <circle cx="432.49" cy="412.25" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
+  <text x="552.22" y="574.04" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">Flask</text>
+  <circle cx="380.0" cy="429.3" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
+  <text x="380.0" y="630.0" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">NumPy</text>
+  <circle cx="345.47" cy="387.53" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
+  <text x="207.78" y="574.04" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">C++</text>
+  <circle cx="324.13" cy="358.15" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
+  <text x="101.34" y="427.54" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">Dockerfile</text>
+  <circle cx="324.13" cy="321.85" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
+  <text x="101.34" y="246.46" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">TypeScript</text>
+  <circle cx="345.47" cy="292.47" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
+  <text x="207.78" y="99.96" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">C#</text>
   <circle cx="380" cy="340" r="3" fill="#629cf4" opacity="0.75"/>
 </svg>
