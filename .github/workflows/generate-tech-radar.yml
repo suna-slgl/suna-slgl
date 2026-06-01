@@ -1,42 +1,35 @@
 name: Generate Tech Radar
 
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
+  schedule:
+    - cron: "0 3 * * *"   # her gün 06:00 Türkiye (03:00 UTC)
+  workflow_dispatch:        # Actions sekmesinden manuel tetikleme
 
 permissions:
   contents: write
 
 jobs:
-  radar:
+  generate:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.12"
 
-      - name: Install dependencies
-        run: |
-          pip install matplotlib numpy requests
-
-      - name: Run radar generator
+      - name: Generate radar.svg
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          GITHUB_USERNAME: suna-slgl
-        run: |
-          python scripts/generate_tech_radar.py
+        run: python generate_radar.py
 
-      - name: Commit generated SVG
+      - name: Commit & push if changed
         run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add assets/tech-radar.svg
-          git commit -m "update tech radar" || echo "nothing to commit"
-          git push
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add radar.svg
+          git diff --cached --quiet && echo "Değişiklik yok, atlanıyor." || \
+            (git commit -m "chore: update tech radar [skip ci]" && git push)
