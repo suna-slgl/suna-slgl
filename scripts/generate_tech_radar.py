@@ -29,12 +29,11 @@ TOKYO_COLORS = [
 ]
 
 TOKYO = {
-    "bg": "#1a1b26",
-    "bg_panel": "#1f2335",
-    "border": "#414868",
+    "grid": "#629cf4",
     "comment": "#565f89",
     "fg": "#c0caf5",
-    "accent": "#7aa2f7",
+    "accent": "#29bda3",
+    "label": "#b482ee",
 }
 
 MANIFEST_FILES = (
@@ -433,10 +432,10 @@ def polygon_points(items, max_r, cx, cy):
 
 def generate_svg(items):
     total = len(items)
-    width, height = 560, 520
-    cx, cy = 280, 254
-    max_r = 170
-    rings = 4
+    width, height = 640, 580
+    cx, cy = 320, 305
+    max_r = 175
+    rings = (25, 50, 75, 100)
 
     out = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="Top {total} technologies radar chart">',
@@ -446,41 +445,42 @@ def generate_svg(items):
         "      <feMerge><feMergeNode in=\"blur\"/><feMergeNode in=\"SourceGraphic\"/></feMerge>",
         "    </filter>",
         "  </defs>",
-        f'  <rect width="{width}" height="{height}" fill="{TOKYO["bg"]}" rx="12"/>',
-        f'  <rect x="1" y="1" width="{width - 2}" height="{height - 2}" fill="none" stroke="{TOKYO["border"]}" stroke-width="1" rx="11"/>',
         f'  <text x="{cx}" y="30" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="16" font-weight="700" fill="{TOKYO["fg"]}">Tech Radar</text>',
         f'  <text x="{cx}" y="49" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="10" fill="{TOKYO["comment"]}">top {total} technologies and languages across all repos</text>',
-        f'  <circle cx="{cx}" cy="{cy}" r="{max_r + 12}" fill="{TOKYO["bg_panel"]}" opacity="0.55"/>',
     ]
 
-    for ring in range(1, rings + 1):
-        radius = max_r * ring / rings
+    for pct in rings:
+        radius = max_r * pct / 100
         points = []
 
         for index in range(total):
             x, y = polar(360 / total * index, radius, cx, cy)
             points.append(f"{x},{y}")
 
-        opacity = 0.5 if ring < rings else 0.85
+        opacity = 0.35 if pct < 100 else 0.75
         out.append(
-            f'  <polygon points="{" ".join(points)}" fill="none" stroke="{TOKYO["border"]}" stroke-width="0.9" opacity="{opacity}"/>'
+            f'  <polygon points="{" ".join(points)}" fill="none" stroke="{TOKYO["grid"]}" stroke-width="0.9" opacity="{opacity}"/>'
+        )
+
+        label_x, label_y = polar(90, radius, cx, cy)
+        out.append(
+            f'  <text x="{label_x + 8}" y="{label_y + 4}" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="10" fill="{TOKYO["fg"]}" opacity="0.82">{pct}%</text>'
         )
 
     for index in range(total):
         x_end, y_end = polar(360 / total * index, max_r, cx, cy)
         out.append(
-            f'  <line x1="{cx}" y1="{cy}" x2="{x_end}" y2="{y_end}" stroke="{TOKYO["border"]}" stroke-width="0.8" opacity="0.65"/>'
+            f'  <line x1="{cx}" y1="{cy}" x2="{x_end}" y2="{y_end}" stroke="{TOKYO["grid"]}" stroke-width="0.8" opacity="0.38"/>'
         )
 
     out.append(
-        f'  <polygon points="{polygon_points(items, max_r, cx, cy)}" fill="{TOKYO["accent"]}" fill-opacity="0.14" stroke="{TOKYO["accent"]}" stroke-width="2" filter="url(#softglow)"/>'
+        f'  <polygon points="{polygon_points(items, max_r, cx, cy)}" fill="{TOKYO["accent"]}" fill-opacity="0.26" stroke="{TOKYO["accent"]}" stroke-width="2.4" filter="url(#softglow)"/>'
     )
 
     for index, (name, count, pct) in enumerate(items):
         angle = 360 / total * index
-        color = TOKYO_COLORS[index % len(TOKYO_COLORS)]
         dot_x, dot_y = polar(angle, pct / 100 * max_r, cx, cy)
-        label_x, label_y = polar(angle, max_r + 58, cx, cy)
+        label_x, label_y = polar(angle, max_r + 60, cx, cy)
 
         if abs(label_x - cx) < 12:
             anchor = "middle"
@@ -491,18 +491,15 @@ def generate_svg(items):
 
         safe_name = html.escape(name)
         out.append(
-            f'  <circle cx="{dot_x}" cy="{dot_y}" r="5" fill="{color}" stroke="{TOKYO["bg"]}" stroke-width="1.5" filter="url(#softglow)"/>'
+            f'  <circle cx="{dot_x}" cy="{dot_y}" r="4.5" fill="{TOKYO["accent"]}" stroke="{TOKYO["accent"]}" stroke-width="1" filter="url(#softglow)"/>'
         )
         out.append(
-            f'  <text x="{label_x}" y="{label_y - 7}" text-anchor="{anchor}" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="{color}">{safe_name}</text>'
-        )
-        out.append(
-            f'  <text x="{label_x}" y="{label_y + 8}" text-anchor="{anchor}" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="10" fill="{TOKYO["comment"]}">{count} repos</text>'
+            f'  <text x="{label_x}" y="{label_y - 3}" text-anchor="{anchor}" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="{TOKYO["label"]}">{safe_name}</text>'
         )
 
     out.extend(
         [
-            f'  <circle cx="{cx}" cy="{cy}" r="3" fill="{TOKYO["border"]}"/>',
+            f'  <circle cx="{cx}" cy="{cy}" r="3" fill="{TOKYO["grid"]}" opacity="0.75"/>',
             f'  <text x="{cx}" y="{height - 13}" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="9" fill="{TOKYO["comment"]}">auto-generated daily from public and private repositories</text>',
             "</svg>",
         ]
