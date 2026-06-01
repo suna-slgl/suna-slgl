@@ -1,14 +1,19 @@
-import os
-import math
+import base64
+import html
 import json
-import urllib.request
+import math
+import os
+import re
+import tomllib
 import urllib.error
-from collections import defaultdict
+import urllib.parse
+import urllib.request
+from collections import Counter
 
-# Config
+
 GITHUB_TOKEN = os.environ.get("GH_TOKEN", "").strip()
-TOP_N = 10
-OUTPUT_FILE = "radar.svg"
+TOP_N = int(os.environ.get("TOP_N", "10"))
+OUTPUT_FILE = os.environ.get("OUTPUT_FILE", "assets/tech-radar.svg")
 
 TOKYO_COLORS = [
     "#7aa2f7",
@@ -24,36 +29,102 @@ TOKYO_COLORS = [
 ]
 
 TOKYO = {
-    "bg": "#1a1b2e",
-    "bg_dark": "#16161e",
+    "bg": "#1a1b26",
     "bg_panel": "#1f2335",
-    "border": "#3b4261",
+    "border": "#414868",
     "comment": "#565f89",
     "fg": "#c0caf5",
-    "fg_dim": "#a9b1d6",
-    "fg_dark": "#9aa5ce",
     "accent": "#7aa2f7",
 }
 
+MANIFEST_FILES = (
+    "package.json",
+    "requirements.txt",
+    "pyproject.toml",
+    "Pipfile",
+    "pubspec.yaml",
+    "Cargo.toml",
+    "go.mod",
+    "composer.json",
+    "Gemfile",
+)
 
-def gh_request(url):
+TECH_ALIASES = {
+    "@angular/core": "Angular",
+    "@nestjs/core": "NestJS",
+    "@reduxjs/toolkit": "Redux",
+    "@vitejs/plugin-react": "Vite",
+    "aspnetcore": "ASP.NET Core",
+    "bootstrap": "Bootstrap",
+    "django": "Django",
+    "dockerfile": "Dockerfile",
+    "dotenv": "Dotenv",
+    "eslint": "ESLint",
+    "express": "Express",
+    "fastapi": "FastAPI",
+    "firebase": "Firebase",
+    "flask": "Flask",
+    "flutter": "Flutter",
+    "graphql": "GraphQL",
+    "jquery": "jQuery",
+    "laravel": "Laravel",
+    "matplotlib": "Matplotlib",
+    "mongodb": "MongoDB",
+    "mongoose": "Mongoose",
+    "mysql": "MySQL",
+    "next": "Next.js",
+    "next.js": "Next.js",
+    "node": "Node.js",
+    "node.js": "Node.js",
+    "numpy": "NumPy",
+    "pandas": "Pandas",
+    "postgres": "PostgreSQL",
+    "postgresql": "PostgreSQL",
+    "prisma": "Prisma",
+    "pytest": "Pytest",
+    "react": "React",
+    "react-dom": "React",
+    "redis": "Redis",
+    "sass": "Sass",
+    "scikit-learn": "Scikit-learn",
+    "spring": "Spring",
+    "sqlite": "SQLite",
+    "tailwind": "Tailwind CSS",
+    "tailwindcss": "Tailwind CSS",
+    "tensorflow": "TensorFlow",
+    "typescript": "TypeScript",
+    "vite": "Vite",
+    "vue": "Vue",
+}
+
+
+def normalize(name):
+    raw = name.strip()
+    key = raw.lower().replace("_", "-")
+    return TECH_ALIASES.get(key, raw)
+
+
+def gh_request(url, *, accept="application/vnd.github+json", allow_404=False):
     req = urllib.request.Request(url)
 
     if GITHUB_TOKEN:
         req.add_header("Authorization", f"Bearer {GITHUB_TOKEN}")
 
-    req.add_header("Accept", "application/vnd.github+json")
+    req.add_header("Accept", accept)
     req.add_header("X-GitHub-Api-Version", "2022-11-28")
-    req.add_header("User-Agent", "tech-radar-generator/1.0")
+    req.add_header("User-Agent", "tech-radar-generator/2.0")
 
     try:
-        with urllib.request.urlopen(req, timeout=30) as r:
-            return json.loads(r.read().decode("utf-8"))
-    except urllib.error.HTTPError as e:
-        body = e.read().decode("utf-8", errors="replace")
+        with urllib.request.urlopen(req, timeout=30) as response:
+            return json.loads(response.read().decode("utf-8"))
+    except urllib.error.HTTPError as error:
+        if allow_404 and error.code == 404:
+            return None
+
+        body = error.read().decode("utf-8", errors="replace")
         raise RuntimeError(
-            f"GitHub API hatası: HTTP {e.code}\nURL: {url}\nYanıt: {body}"
-        ) from e
+            f"GitHub API error: HTTP {error.code}\nURL: {url}\nResponse: {body}"
+        ) from error
 
 
 def fetch_all_repos():
@@ -69,7 +140,6 @@ def fetch_all_repos():
             "&sort=updated"
             "&direction=desc"
         )
-
         batch = gh_request(url)
 
         if not batch:
@@ -86,45 +156,263 @@ def fetch_all_repos():
 
 
 def fetch_languages(repo_full_name):
+    return gh_request(f"https://api.github.com/repos/{repo_full_name}/languages")
+
+
+def fetch_manifest(repo_full_name, path):
+    encoded_path = urllib.parse.quote(path)
+    url = f"https://api.github.com/repos/{repo_full_name}/contents/{encoded_path}"
+    data = gh_request(url, allow_404=True)
+
+    if not data or data.get("type") != "file" or data.get("encoding") != "base64":
+        return ""
+
+    content = data.get("content", "")
+    return base64.b64decode(content).decode("utf-8", errors="replace")
+
+
+def extract_package_json_tech(content):
+    techs = set()
+
     try:
-        return gh_request(f"https://api.github.com/repos/{repo_full_name}/languages")
-    except RuntimeError as e:
-        print(f"  Uyarı: {repo_full_name} dil verisi alınamadı.")
-        print(f"  {e}")
-        return {}
+        data = json.loads(content)
+    except json.JSONDecodeError:
+        return techs
+
+    for section in (
+        "dependencies",
+        "devDependencies",
+        "peerDependencies",
+        "optionalDependencies",
+    ):
+        for package_name in data.get(section, {}):
+            techs.add(normalize(package_name))
+
+    return techs
 
 
-def get_top_languages():
+def extract_requirements_tech(content):
+    techs = set()
+
+    for line in content.splitlines():
+        clean = line.strip()
+
+        if not clean or clean.startswith(("#", "[", ";")):
+            continue
+
+        name = clean.split("==")[0].split(">=")[0].split("<=")[0].split("~=")[0]
+        name = name.split("=")[0].split("[")[0].strip()
+
+        if name:
+            techs.add(normalize(name))
+
+    return techs
+
+
+def extract_toml_tech(content, sections):
+    techs = set()
+
+    try:
+        data = tomllib.loads(content)
+    except tomllib.TOMLDecodeError:
+        return techs
+
+    for section in sections:
+        current = data
+
+        for key in section:
+            current = current.get(key, {})
+
+            if not isinstance(current, (dict, list)):
+                current = {}
+                break
+
+        if isinstance(current, dict):
+            for name, value in current.items():
+                if name.lower() == "python":
+                    continue
+
+                if isinstance(value, list):
+                    for item in value:
+                        if isinstance(item, str):
+                            package = re.split(r"[<>=~!;\[]", item, maxsplit=1)[
+                                0
+                            ].strip()
+
+                            if package:
+                                techs.add(normalize(package))
+                else:
+                    techs.add(normalize(name))
+        elif isinstance(current, list):
+            for item in current:
+                if isinstance(item, str):
+                    name = re.split(r"[<>=~!;\[]", item, maxsplit=1)[0].strip()
+
+                    if name:
+                        techs.add(normalize(name))
+
+    return techs
+
+
+def extract_pubspec_tech(content):
+    techs = set()
+    active = False
+
+    for line in content.splitlines():
+        if re.match(r"^(dependencies|dev_dependencies):\s*$", line):
+            active = True
+            continue
+
+        if active and line and not line.startswith((" ", "\t")):
+            active = False
+
+        if not active:
+            continue
+
+        match = re.match(r"^\s{2,}([A-Za-z0-9_\-]+):", line)
+
+        if match and match.group(1) != "sdk":
+            techs.add(normalize(match.group(1)))
+
+    return techs
+
+
+def extract_go_mod_tech(content):
+    techs = set()
+
+    for line in content.splitlines():
+        clean = line.strip()
+
+        if clean.startswith("require "):
+            package = clean.replace("require ", "", 1).split()[0]
+        elif clean and not clean.startswith(("//", "module", "go", "replace", "(")):
+            package = clean.split()[0]
+        else:
+            continue
+
+        techs.add(normalize(package.split("/")[-1]))
+
+    return techs
+
+
+def extract_composer_tech(content):
+    techs = set()
+
+    try:
+        data = json.loads(content)
+    except json.JSONDecodeError:
+        return techs
+
+    for section in ("require", "require-dev"):
+        for package_name in data.get(section, {}):
+            techs.add(normalize(package_name.split("/")[-1]))
+
+    return techs
+
+
+def extract_gemfile_tech(content):
+    techs = set()
+
+    for line in content.splitlines():
+        match = re.match(r"^\s*gem\s+['\"]([^'\"]+)['\"]", line)
+
+        if match:
+            techs.add(normalize(match.group(1)))
+
+    return techs
+
+
+def extract_manifest_tech(path, content):
+    if path == "package.json":
+        return extract_package_json_tech(content)
+
+    if path == "requirements.txt":
+        return extract_requirements_tech(content)
+
+    if path == "pyproject.toml":
+        return extract_toml_tech(
+            content,
+            (
+                ("project", "dependencies"),
+                ("project", "optional-dependencies"),
+                ("tool", "poetry", "dependencies"),
+                ("tool", "poetry", "group", "dev", "dependencies"),
+            ),
+        )
+
+    if path == "Pipfile":
+        return extract_toml_tech(content, (("packages",), ("dev-packages",)))
+
+    if path == "pubspec.yaml":
+        return extract_pubspec_tech(content)
+
+    if path == "Cargo.toml":
+        return extract_toml_tech(content, (("dependencies",), ("dev-dependencies",)))
+
+    if path == "go.mod":
+        return extract_go_mod_tech(content)
+
+    if path == "composer.json":
+        return extract_composer_tech(content)
+
+    if path == "Gemfile":
+        return extract_gemfile_tech(content)
+
+    return set()
+
+
+def collect_repo_technologies(repo):
+    full_name = repo.get("full_name")
+    repo_techs = set()
+
+    if not full_name:
+        return repo_techs
+
+    try:
+        repo_techs.update(normalize(lang) for lang in fetch_languages(full_name))
+    except RuntimeError as error:
+        print(f"  Warning: could not fetch languages for {full_name}: {error}")
+
+    repo_techs.update(normalize(topic) for topic in repo.get("topics", []))
+
+    for manifest in MANIFEST_FILES:
+        try:
+            content = fetch_manifest(full_name, manifest)
+        except RuntimeError as error:
+            print(f"  Warning: could not fetch {manifest} for {full_name}: {error}")
+            continue
+
+        if content:
+            repo_techs.update(extract_manifest_tech(manifest, content))
+
+    return {tech for tech in repo_techs if tech}
+
+
+def get_top_technologies():
     if not GITHUB_TOKEN:
         raise RuntimeError(
-            "GH_TOKEN bulunamadı. GitHub repo listesini çekmek için secrets.GH_TOKEN gerekli."
+            "GH_TOKEN is required. Add a classic PAT or fine-grained token with access to public and private repositories."
         )
 
     repos = fetch_all_repos()
-    print(f"  {len(repos)} repo bulundu.")
+    print(f"  Found {len(repos)} repositories.")
 
-    totals = defaultdict(int)
+    totals = Counter()
 
     for repo in repos:
-        full_name = repo.get("full_name")
-
-        if not full_name:
+        if repo.get("archived"):
             continue
 
-        langs = fetch_languages(full_name)
+        repo_techs = collect_repo_technologies(repo)
+        totals.update(repo_techs)
 
-        for lang, byte_count in langs.items():
-            totals[lang] += byte_count
-
-    sorted_langs = sorted(totals.items(), key=lambda x: x[1], reverse=True)
-    top = sorted_langs[:TOP_N]
+    top = totals.most_common(TOP_N)
 
     if not top:
         return []
 
-    max_val = top[0][1]
-
-    return [(lang, round(val / max_val * 100)) for lang, val in top]
+    max_count = top[0][1]
+    return [(tech, count, round(count / max_count * 100)) for tech, count in top]
 
 
 def polar(angle_deg, radius, cx, cy):
@@ -132,145 +420,115 @@ def polar(angle_deg, radius, cx, cy):
     return round(cx + radius * math.cos(rad), 2), round(cy + radius * math.sin(rad), 2)
 
 
-def polygon_pts(values, max_r, cx, cy, n):
-    pts = []
+def polygon_points(items, max_r, cx, cy):
+    points = []
+    total = len(items)
 
-    for i, v in enumerate(values):
-        x, y = polar(360 / n * i, v / 100 * max_r, cx, cy)
-        pts.append(f"{x},{y}")
+    for index, (_, _, pct) in enumerate(items):
+        x, y = polar(360 / total * index, pct / 100 * max_r, cx, cy)
+        points.append(f"{x},{y}")
 
-    return " ".join(pts)
+    return " ".join(points)
 
 
-def generate_svg(languages):
-    n = len(languages)
-    w, h = 520, 500
-    cx, cy = 260, 242
+def generate_svg(items):
+    total = len(items)
+    width, height = 560, 520
+    cx, cy = 280, 254
     max_r = 170
     rings = 4
 
-    color_map = {
-        lang: TOKYO_COLORS[i % len(TOKYO_COLORS)]
-        for i, (lang, _) in enumerate(languages)
-    }
+    out = [
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="Top {total} technologies radar chart">',
+        "  <defs>",
+        '    <filter id="softglow" x="-25%" y="-25%" width="150%" height="150%">',
+        '      <feGaussianBlur in="SourceGraphic" stdDeviation="1.8" result="blur"/>',
+        "      <feMerge><feMergeNode in=\"blur\"/><feMergeNode in=\"SourceGraphic\"/></feMerge>",
+        "    </filter>",
+        "  </defs>",
+        f'  <rect width="{width}" height="{height}" fill="{TOKYO["bg"]}" rx="12"/>',
+        f'  <rect x="1" y="1" width="{width - 2}" height="{height - 2}" fill="none" stroke="{TOKYO["border"]}" stroke-width="1" rx="11"/>',
+        f'  <text x="{cx}" y="30" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="16" font-weight="700" fill="{TOKYO["fg"]}">Tech Radar</text>',
+        f'  <text x="{cx}" y="49" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="10" fill="{TOKYO["comment"]}">top {total} technologies and languages across all repos</text>',
+        f'  <circle cx="{cx}" cy="{cy}" r="{max_r + 12}" fill="{TOKYO["bg_panel"]}" opacity="0.55"/>',
+    ]
 
-    out = []
+    for ring in range(1, rings + 1):
+        radius = max_r * ring / rings
+        points = []
 
-    out.append(
-        f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}">'
-    )
+        for index in range(total):
+            x, y = polar(360 / total * index, radius, cx, cy)
+            points.append(f"{x},{y}")
 
-    out.append(
-        """  <defs>
-    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/>
-      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-    <filter id="softglow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="1.5" result="blur"/>
-      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-  </defs>"""
-    )
-
-    out.append(f'  <rect width="{w}" height="{h}" fill="{TOKYO["bg"]}" rx="12"/>')
-    out.append(
-        f'  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" fill="none" stroke="{TOKYO["border"]}" stroke-width="1" rx="11"/>'
-    )
-
-    out.append(
-        f'  <text x="{cx}" y="28" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="15" font-weight="700" fill="{TOKYO["accent"]}" filter="url(#softglow)">Tech Radar</text>'
-    )
-    out.append(
-        f'  <text x="{cx}" y="44" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="10" fill="{TOKYO["comment"]}">top {n} languages across all repos</text>'
-    )
-
-    out.append(
-        f'  <circle cx="{cx}" cy="{cy}" r="{max_r + 10}" fill="{TOKYO["bg_panel"]}" opacity="0.5"/>'
-    )
-
-    for i in range(1, rings + 1):
-        r = max_r * i / rings
-        pts = []
-
-        for j in range(n):
-            x, y = polar(360 / n * j, r, cx, cy)
-            pts.append(f"{x},{y}")
-
-        opacity = 0.5 if i < rings else 0.8
-
+        opacity = 0.5 if ring < rings else 0.85
         out.append(
-            f'  <polygon points="{" ".join(pts)}" fill="none" stroke="{TOKYO["border"]}" stroke-width="0.8" opacity="{opacity}"/>'
+            f'  <polygon points="{" ".join(points)}" fill="none" stroke="{TOKYO["border"]}" stroke-width="0.9" opacity="{opacity}"/>'
         )
 
-    for i in range(n):
-        x_end, y_end = polar(360 / n * i, max_r, cx, cy)
+    for index in range(total):
+        x_end, y_end = polar(360 / total * index, max_r, cx, cy)
         out.append(
-            f'  <line x1="{cx}" y1="{cy}" x2="{x_end}" y2="{y_end}" stroke="{TOKYO["border"]}" stroke-width="0.8" opacity="0.6"/>'
+            f'  <line x1="{cx}" y1="{cy}" x2="{x_end}" y2="{y_end}" stroke="{TOKYO["border"]}" stroke-width="0.8" opacity="0.65"/>'
         )
-
-    vals = [pct for _, pct in languages]
-    poly = polygon_pts(vals, max_r, cx, cy, n)
 
     out.append(
-        f'  <polygon points="{poly}" fill="{TOKYO["accent"]}" fill-opacity="0.12" stroke="{TOKYO["accent"]}" stroke-width="1.8" filter="url(#softglow)"/>'
+        f'  <polygon points="{polygon_points(items, max_r, cx, cy)}" fill="{TOKYO["accent"]}" fill-opacity="0.14" stroke="{TOKYO["accent"]}" stroke-width="2" filter="url(#softglow)"/>'
     )
 
-    for i, (lang, pct) in enumerate(languages):
-        angle = 360 / n * i
-        color = color_map[lang]
+    for index, (name, count, pct) in enumerate(items):
+        angle = 360 / total * index
+        color = TOKYO_COLORS[index % len(TOKYO_COLORS)]
+        dot_x, dot_y = polar(angle, pct / 100 * max_r, cx, cy)
+        label_x, label_y = polar(angle, max_r + 58, cx, cy)
 
-        dx, dy = polar(angle, pct / 100 * max_r, cx, cy)
-
-        out.append(
-            f'  <circle cx="{dx}" cy="{dy}" r="5" fill="{color}" stroke="{TOKYO["bg"]}" stroke-width="1.5" filter="url(#glow)"/>'
-        )
-
-        lx, ly = polar(angle, max_r + 48, cx, cy)
-
-        if abs(lx - cx) < 10:
+        if abs(label_x - cx) < 12:
             anchor = "middle"
-        elif lx < cx:
+        elif label_x < cx:
             anchor = "end"
         else:
             anchor = "start"
 
+        safe_name = html.escape(name)
         out.append(
-            f'  <text x="{lx}" y="{ly - 6}" text-anchor="{anchor}" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="600" fill="{color}" filter="url(#softglow)">{lang}</text>'
+            f'  <circle cx="{dot_x}" cy="{dot_y}" r="5" fill="{color}" stroke="{TOKYO["bg"]}" stroke-width="1.5" filter="url(#softglow)"/>'
         )
         out.append(
-            f'  <text x="{lx}" y="{ly + 8}" text-anchor="{anchor}" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="10" fill="{TOKYO["comment"]}">{pct}%</text>'
+            f'  <text x="{label_x}" y="{label_y - 7}" text-anchor="{anchor}" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="{color}">{safe_name}</text>'
+        )
+        out.append(
+            f'  <text x="{label_x}" y="{label_y + 8}" text-anchor="{anchor}" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="10" fill="{TOKYO["comment"]}">{count} repos</text>'
         )
 
-    out.append(f'  <circle cx="{cx}" cy="{cy}" r="3" fill="{TOKYO["border"]}"/>')
-
-    out.append(
-        f'  <text x="{cx}" y="{h - 12}" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="9" fill="{TOKYO["comment"]}">auto-generated daily</text>'
+    out.extend(
+        [
+            f'  <circle cx="{cx}" cy="{cy}" r="3" fill="{TOKYO["border"]}"/>',
+            f'  <text x="{cx}" y="{height - 13}" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="9" fill="{TOKYO["comment"]}">auto-generated daily from public and private repositories</text>',
+            "</svg>",
+        ]
     )
-
-    out.append("</svg>")
 
     return "\n".join(out)
 
 
 if __name__ == "__main__":
-    print("GitHub API'dan dil verileri çekiliyor...")
+    print("Fetching repository technologies from GitHub API...")
 
-    langs = get_top_languages()
+    technologies = get_top_technologies()
 
-    if not langs:
-        print("Hiç dil verisi bulunamadı. Token ve repo izinlerini kontrol et.")
+    if not technologies:
+        print("No technologies found. Check token permissions and repository access.")
         raise SystemExit(1)
 
-    print(f"\nTop {len(langs)} dil:")
+    print(f"\nTop {len(technologies)} technologies:")
 
-    for lang, pct in langs:
-        bar = "#" * (pct // 5) + "." * (20 - pct // 5)
-        print(f"  {lang:<16} {pct:>3}%  {bar}")
+    for name, count, pct in technologies:
+        bar = "#" * max(1, pct // 5)
+        print(f"  {name:<20} {count:>3} repos  {bar}")
 
-    svg = generate_svg(langs)
+    os.makedirs(os.path.dirname(OUTPUT_FILE) or ".", exist_ok=True)
 
-    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        f.write(svg)
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as file:
+        file.write(generate_svg(technologies))
 
-    print(f"\nKaydedildi: {OUTPUT_FILE}")
+    print(f"\nSaved: {OUTPUT_FILE}")

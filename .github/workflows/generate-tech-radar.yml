@@ -21,9 +21,11 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Generate radar.svg
+      - name: Generate tech radar
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          OUTPUT_FILE: assets/tech-radar.svg
+          TOP_N: "10"
         run: python scripts/generate_tech_radar.py
 
       - name: Commit and push if changed
@@ -31,10 +33,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add radar.svg
+          git add assets/tech-radar.svg
 
           if git diff --cached --quiet; then
-            echo "Değişiklik yok, commit atlanıyor."
+            echo "No changes, skipping commit."
           else
             git commit -m "chore: update tech radar [skip ci]"
             git push
