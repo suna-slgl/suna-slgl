@@ -51,7 +51,7 @@ def fetch_all_repos():
     while True:
         url = (
             f"https://api.github.com/user/repos"
-            f"?per_page=100&page={page}&type=all&affiliation=owner"
+            f"?per_page=100&page={page}&type=all"
         )
         batch = gh_request(url)
         if not batch:
