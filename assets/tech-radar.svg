@@ -1,51 +1,48 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="580" viewBox="0 0 640 580" role="img" aria-label="Top 10 technologies radar chart">
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="680" viewBox="0 0 760 680" role="img" aria-label="Top 10 technologies radar chart">
   <defs>
     <filter id="softglow" x="-25%" y="-25%" width="150%" height="150%">
       <feGaussianBlur in="SourceGraphic" stdDeviation="1.8" result="blur"/>
       <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
   </defs>
-  <text x="320" y="30" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="16" font-weight="700" fill="#c0caf5">Tech Radar</text>
-  <text x="320" y="49" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="10" fill="#565f89">top 10 technologies and languages across all repos</text>
-  <polygon points="320.0,261.25 345.72,269.61 361.61,291.48 361.61,318.52 345.72,340.39 320.0,348.75 294.28,340.39 278.39,318.52 278.39,291.48 294.28,269.61" fill="none" stroke="#629cf4" stroke-width="0.9" opacity="0.35"/>
-  <text x="371.75" y="309.0" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="10" fill="#c0caf5" opacity="0.82">25%</text>
-  <polygon points="320.0,217.5 371.43,234.21 403.22,277.96 403.22,332.04 371.43,375.79 320.0,392.5 268.57,375.79 236.78,332.04 236.78,277.96 268.57,234.21" fill="none" stroke="#629cf4" stroke-width="0.9" opacity="0.35"/>
-  <text x="415.5" y="309.0" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="10" fill="#c0caf5" opacity="0.82">50%</text>
-  <polygon points="320.0,173.75 397.15,198.82 444.83,264.44 444.83,345.56 397.15,411.18 320.0,436.25 242.85,411.18 195.17,345.56 195.17,264.44 242.85,198.82" fill="none" stroke="#629cf4" stroke-width="0.9" opacity="0.35"/>
-  <text x="459.25" y="309.0" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="10" fill="#c0caf5" opacity="0.82">75%</text>
-  <polygon points="320.0,130.0 422.86,163.42 486.43,250.92 486.43,359.08 422.86,446.58 320.0,480.0 217.14,446.58 153.57,359.08 153.57,250.92 217.14,163.42" fill="none" stroke="#629cf4" stroke-width="0.9" opacity="0.75"/>
-  <text x="503.0" y="309.0" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="10" fill="#c0caf5" opacity="0.82">100%</text>
-  <line x1="320" y1="305" x2="320.0" y2="130.0" stroke="#629cf4" stroke-width="0.8" opacity="0.38"/>
-  <line x1="320" y1="305" x2="422.86" y2="163.42" stroke="#629cf4" stroke-width="0.8" opacity="0.38"/>
-  <line x1="320" y1="305" x2="486.43" y2="250.92" stroke="#629cf4" stroke-width="0.8" opacity="0.38"/>
-  <line x1="320" y1="305" x2="486.43" y2="359.08" stroke="#629cf4" stroke-width="0.8" opacity="0.38"/>
-  <line x1="320" y1="305" x2="422.86" y2="446.58" stroke="#629cf4" stroke-width="0.8" opacity="0.38"/>
-  <line x1="320" y1="305" x2="320.0" y2="480.0" stroke="#629cf4" stroke-width="0.8" opacity="0.38"/>
-  <line x1="320" y1="305" x2="217.14" y2="446.58" stroke="#629cf4" stroke-width="0.8" opacity="0.38"/>
-  <line x1="320" y1="305" x2="153.57" y2="359.08" stroke="#629cf4" stroke-width="0.8" opacity="0.38"/>
-  <line x1="320" y1="305" x2="153.57" y2="250.92" stroke="#629cf4" stroke-width="0.8" opacity="0.38"/>
-  <line x1="320" y1="305" x2="217.14" y2="163.42" stroke="#629cf4" stroke-width="0.8" opacity="0.38"/>
-  <polygon points="320.0,130.0 402.29,191.74 419.86,272.55 411.54,334.74 363.2,364.46 320.0,322.5 311.77,316.33 310.01,308.24 311.68,302.3 315.89,299.34" fill="#29bda3" fill-opacity="0.26" stroke="#29bda3" stroke-width="2.4" filter="url(#softglow)"/>
-  <circle cx="320.0" cy="130.0" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
-  <text x="320.0" y="67.0" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">TypeScript</text>
-  <circle cx="402.29" cy="191.74" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
-  <text x="458.13" y="111.88" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">HTML</text>
-  <circle cx="419.86" cy="272.55" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
-  <text x="543.5" y="229.38" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">Python</text>
-  <circle cx="411.54" cy="334.74" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
-  <text x="543.5" y="374.62" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">Dart</text>
-  <circle cx="363.2" cy="364.46" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
-  <text x="458.13" y="492.12" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">C#</text>
-  <circle cx="320.0" cy="322.5" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
-  <text x="320.0" y="537.0" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">C++</text>
-  <circle cx="311.77" cy="316.33" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
-  <text x="181.87" y="492.12" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">CSS</text>
-  <circle cx="310.01" cy="308.24" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
-  <text x="96.5" y="374.62" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">CMake</text>
-  <circle cx="311.68" cy="302.3" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
-  <text x="96.5" y="229.38" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">Swift</text>
-  <circle cx="315.89" cy="299.34" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
-  <text x="181.87" y="111.88" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">Dockerfile</text>
-  <circle cx="320" cy="305" r="3" fill="#629cf4" opacity="0.75"/>
-  <text x="320" y="567" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="9" fill="#565f89">auto-generated daily from public and private repositories</text>
+  <polygon points="380.0,281.25 414.53,292.47 435.87,321.85 435.87,358.15 414.53,387.53 380.0,398.75 345.47,387.53 324.13,358.15 324.13,321.85 345.47,292.47" fill="none" stroke="#629cf4" stroke-width="0.9" opacity="0.35"/>
+  <text x="446.75" y="344.0" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="10" fill="#c0caf5" opacity="0.82">25%</text>
+  <polygon points="380.0,222.5 449.06,244.94 491.75,303.69 491.75,376.31 449.06,435.06 380.0,457.5 310.94,435.06 268.25,376.31 268.25,303.69 310.94,244.94" fill="none" stroke="#629cf4" stroke-width="0.9" opacity="0.35"/>
+  <text x="505.5" y="344.0" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="10" fill="#c0caf5" opacity="0.82">50%</text>
+  <polygon points="380.0,163.75 483.6,197.41 547.62,285.54 547.62,394.46 483.6,482.59 380.0,516.25 276.4,482.59 212.38,394.46 212.38,285.54 276.4,197.41" fill="none" stroke="#629cf4" stroke-width="0.9" opacity="0.35"/>
+  <text x="564.25" y="344.0" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="10" fill="#c0caf5" opacity="0.82">75%</text>
+  <polygon points="380.0,105.0 518.13,149.88 603.5,267.38 603.5,412.62 518.13,530.12 380.0,575.0 241.87,530.12 156.5,412.62 156.5,267.38 241.87,149.88" fill="none" stroke="#629cf4" stroke-width="0.9" opacity="0.75"/>
+  <text x="623.0" y="344.0" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="10" fill="#c0caf5" opacity="0.82">100%</text>
+  <line x1="380" y1="340" x2="380.0" y2="105.0" stroke="#629cf4" stroke-width="0.8" opacity="0.38"/>
+  <line x1="380" y1="340" x2="518.13" y2="149.88" stroke="#629cf4" stroke-width="0.8" opacity="0.38"/>
+  <line x1="380" y1="340" x2="603.5" y2="267.38" stroke="#629cf4" stroke-width="0.8" opacity="0.38"/>
+  <line x1="380" y1="340" x2="603.5" y2="412.62" stroke="#629cf4" stroke-width="0.8" opacity="0.38"/>
+  <line x1="380" y1="340" x2="518.13" y2="530.12" stroke="#629cf4" stroke-width="0.8" opacity="0.38"/>
+  <line x1="380" y1="340" x2="380.0" y2="575.0" stroke="#629cf4" stroke-width="0.8" opacity="0.38"/>
+  <line x1="380" y1="340" x2="241.87" y2="530.12" stroke="#629cf4" stroke-width="0.8" opacity="0.38"/>
+  <line x1="380" y1="340" x2="156.5" y2="412.62" stroke="#629cf4" stroke-width="0.8" opacity="0.38"/>
+  <line x1="380" y1="340" x2="156.5" y2="267.38" stroke="#629cf4" stroke-width="0.8" opacity="0.38"/>
+  <line x1="380" y1="340" x2="241.87" y2="149.88" stroke="#629cf4" stroke-width="0.8" opacity="0.38"/>
+  <polygon points="380.0,105.0 490.5,187.9 514.1,296.43 502.92,379.94 438.01,419.85 380.0,363.5 368.95,355.21 366.59,344.36 368.83,336.37 374.47,332.4" fill="#29bda3" fill-opacity="0.26" stroke="#29bda3" stroke-width="2.4" filter="url(#softglow)"/>
+  <circle cx="380.0" cy="105.0" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
+  <text x="380.0" y="44.0" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">TypeScript</text>
+  <circle cx="490.5" cy="187.9" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
+  <text x="552.22" y="99.96" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">HTML</text>
+  <circle cx="514.1" cy="296.43" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
+  <text x="658.66" y="246.46" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">Python</text>
+  <circle cx="502.92" cy="379.94" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
+  <text x="658.66" y="427.54" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">Dart</text>
+  <circle cx="438.01" cy="419.85" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
+  <text x="552.22" y="574.04" text-anchor="start" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">C#</text>
+  <circle cx="380.0" cy="363.5" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
+  <text x="380.0" y="630.0" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">C++</text>
+  <circle cx="368.95" cy="355.21" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
+  <text x="207.78" y="574.04" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">CSS</text>
+  <circle cx="366.59" cy="344.36" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
+  <text x="101.34" y="427.54" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">CMake</text>
+  <circle cx="368.83" cy="336.37" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
+  <text x="101.34" y="246.46" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">Swift</text>
+  <circle cx="374.47" cy="332.4" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
+  <text x="207.78" y="99.96" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">Dockerfile</text>
+  <circle cx="380" cy="340" r="3" fill="#629cf4" opacity="0.75"/>
 </svg>

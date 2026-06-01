@@ -8,12 +8,12 @@
 </section>
 
 <section align="center">
-  <h2 align="center">Tech Radar</h2>
+  <h2 align="center">Code Constellation</h2>
 
   <img
     src="./assets/tech-radar.svg"
-    width="500"
-    alt="Tech Radar"
+    width="650"
+    alt="Code Constellation"
   />
 </section>
 
@@ -45,12 +45,12 @@
 
 
 <section align="center">
-  <h2 align="center">Tech Radar</h2>
+  <h2 align="center">Code Constellation</h2>
 
   <img
     src="./assets/tech-radar.svg"
     width="500"
-    alt="Tech Radar"
+    alt="Code Constellation"
   />
 </section>
 

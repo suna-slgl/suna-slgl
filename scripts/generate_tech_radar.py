@@ -432,9 +432,9 @@ def polygon_points(items, max_r, cx, cy):
 
 def generate_svg(items):
     total = len(items)
-    width, height = 640, 580
-    cx, cy = 320, 305
-    max_r = 175
+    width, height = 760, 680
+    cx, cy = 380, 340
+    max_r = 235
     rings = (25, 50, 75, 100)
 
     out = [
@@ -445,8 +445,6 @@ def generate_svg(items):
         "      <feMerge><feMergeNode in=\"blur\"/><feMergeNode in=\"SourceGraphic\"/></feMerge>",
         "    </filter>",
         "  </defs>",
-        f'  <text x="{cx}" y="30" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="16" font-weight="700" fill="{TOKYO["fg"]}">Tech Radar</text>',
-        f'  <text x="{cx}" y="49" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="10" fill="{TOKYO["comment"]}">top {total} technologies and languages across all repos</text>',
     ]
 
     for pct in rings:
@@ -480,7 +478,7 @@ def generate_svg(items):
     for index, (name, count, pct) in enumerate(items):
         angle = 360 / total * index
         dot_x, dot_y = polar(angle, pct / 100 * max_r, cx, cy)
-        label_x, label_y = polar(angle, max_r + 60, cx, cy)
+        label_x, label_y = polar(angle, max_r + 58, cx, cy)
 
         if abs(label_x - cx) < 12:
             anchor = "middle"
@@ -500,7 +498,6 @@ def generate_svg(items):
     out.extend(
         [
             f'  <circle cx="{cx}" cy="{cy}" r="3" fill="{TOKYO["grid"]}" opacity="0.75"/>',
-            f'  <text x="{cx}" y="{height - 13}" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="9" fill="{TOKYO["comment"]}">auto-generated daily from public and private repositories</text>',
             "</svg>",
         ]
     )
