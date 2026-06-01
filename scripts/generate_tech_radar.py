@@ -52,22 +52,42 @@ TECH_ALIASES = {
     "@angular/core": "Angular",
     "@nestjs/core": "NestJS",
     "@reduxjs/toolkit": "Redux",
+    "@tailwindcss/vite": "Tailwind CSS",
     "@vitejs/plugin-react": "Vite",
+    "@vitejs/plugin-vue": "Vite",
+    "asp.net": "ASP.NET",
+    "asp.net-core": "ASP.NET Core",
     "aspnetcore": "ASP.NET Core",
+    "batchfile": "Batch",
     "bootstrap": "Bootstrap",
+    "csharp": "C#",
+    "css3": "CSS",
+    "docker": "Docker",
+    "docker-compose": "Docker",
+    "dockerfile": "Docker",
     "django": "Django",
-    "dockerfile": "Dockerfile",
     "dotenv": "Dotenv",
+    "ecmascript": "JavaScript",
     "eslint": "ESLint",
     "express": "Express",
     "fastapi": "FastAPI",
     "firebase": "Firebase",
     "flask": "Flask",
     "flutter": "Flutter",
+    "github-actions": "GitHub Actions",
+    "go-mod": "Go",
+    "golang": "Go",
     "graphql": "GraphQL",
+    "html5": "HTML",
+    "ipynb": "Jupyter",
+    "javascript": "JavaScript",
     "jquery": "jQuery",
+    "jupyter": "Jupyter",
+    "jupyter-notebook": "Jupyter",
     "laravel": "Laravel",
+    "makefile": "Make",
     "matplotlib": "Matplotlib",
+    "mdx": "MDX",
     "mongodb": "MongoDB",
     "mongoose": "Mongoose",
     "mysql": "MySQL",
@@ -77,29 +97,76 @@ TECH_ALIASES = {
     "node.js": "Node.js",
     "numpy": "NumPy",
     "pandas": "Pandas",
+    "powershell": "PowerShell",
     "postgres": "PostgreSQL",
     "postgresql": "PostgreSQL",
     "prisma": "Prisma",
+    "ps1": "PowerShell",
     "pytest": "Pytest",
     "react": "React",
     "react-dom": "React",
+    "react-native": "React Native",
     "redis": "Redis",
     "sass": "Sass",
     "scikit-learn": "Scikit-learn",
+    "scss": "Sass",
+    "sh": "Shell",
+    "shell-script": "Shell",
     "spring": "Spring",
+    "spring-boot": "Spring Boot",
     "sqlite": "SQLite",
     "tailwind": "Tailwind CSS",
     "tailwindcss": "Tailwind CSS",
     "tensorflow": "TensorFlow",
+    "ts": "TypeScript",
+    "tsx": "TypeScript",
     "typescript": "TypeScript",
     "vite": "Vite",
     "vue": "Vue",
+    "vue.js": "Vue",
 }
 
 
 def normalize(name):
     raw = name.strip()
-    key = raw.lower().replace("_", "-")
+    key = raw.lower().replace("_", "-").replace(" ", "-")
+
+    if key.startswith("@types/") or key.startswith("@types-"):
+        return "TypeScript"
+
+    if key.startswith("@vitejs/"):
+        return "Vite"
+
+    if key.startswith("@tailwindcss/") or key.startswith("tailwindcss-"):
+        return "Tailwind CSS"
+
+    if key.startswith("eslint-") or key.startswith("@eslint/"):
+        return "ESLint"
+
+    if key.startswith("prettier-") or key.startswith("@prettier/"):
+        return "Prettier"
+
+    if key.startswith("babel-") or key.startswith("@babel/"):
+        return "Babel"
+
+    if key.startswith("jest-") or key.startswith("@jest/"):
+        return "Jest"
+
+    if key.startswith("flask-"):
+        return "Flask"
+
+    if key.startswith("django-"):
+        return "Django"
+
+    if key.startswith("docker-"):
+        return "Docker"
+
+    if key.startswith("next-"):
+        return "Next.js"
+
+    if key.startswith("react-") and key != "react-native":
+        return "React"
+
     return TECH_ALIASES.get(key, raw)
 
 
