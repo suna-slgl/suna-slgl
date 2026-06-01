@@ -527,7 +527,7 @@ def generate_svg(items):
             f'  <polygon points="{" ".join(points)}" fill="none" stroke="{TOKYO["grid"]}" stroke-width="0.9" opacity="{opacity}"/>'
         )
 
-        label_x, label_y = polar(90, radius, cx, cy)
+        label_x, label_y = polar(180, radius, cx, cy)
         out.append(
             f'  <text x="{label_x + 8}" y="{label_y + 4}" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="10" fill="{TOKYO["fg"]}" opacity="0.82">{pct}%</text>'
         )
