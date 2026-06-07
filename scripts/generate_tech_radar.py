@@ -103,6 +103,7 @@ TECH_ALIASES = {
     "prisma": "Prisma",
     "ps1": "PowerShell",
     "pytest": "Pytest",
+    "python": "Python",
     "react": "React",
     "react-dom": "React",
     "react-native": "React Native",
@@ -168,6 +169,19 @@ def normalize(name):
         return "React"
 
     return TECH_ALIASES.get(key, raw)
+
+
+def deduplicate_names(names):
+    unique = {}
+
+    for name in names:
+        key = name.casefold()
+        current = unique.get(key)
+
+        if current is None or (current.islower() and not name.islower()):
+            unique[key] = name
+
+    return unique
 
 
 def gh_request(url, *, accept="application/vnd.github+json", allow_404=False):
@@ -451,7 +465,7 @@ def collect_repo_technologies(repo):
         if content:
             repo_techs.update(extract_manifest_tech(manifest, content))
 
-    return {tech for tech in repo_techs if tech}
+    return set(deduplicate_names(tech for tech in repo_techs if tech).values())
 
 
 def get_top_technologies():
@@ -464,13 +478,21 @@ def get_top_technologies():
     print(f"  Found {len(repos)} repositories.")
 
     totals = Counter()
+    display_names = {}
 
     for repo in repos:
         if repo.get("archived"):
             continue
 
-        repo_techs = collect_repo_technologies(repo)
-        totals.update(repo_techs)
+        repo_techs = deduplicate_names(collect_repo_technologies(repo)).values()
+        for tech in repo_techs:
+            key = tech.casefold()
+            totals[key] += 1
+
+            current = display_names.get(key)
+
+            if current is None or (current.islower() and not tech.islower()):
+                display_names[key] = tech
 
     top = totals.most_common(TOP_N)
 
@@ -478,7 +500,10 @@ def get_top_technologies():
         return []
 
     max_count = top[0][1]
-    return [(tech, count, round(count / max_count * 100)) for tech, count in top]
+    return [
+        (display_names[key], count, round(count / max_count * 100))
+        for key, count in top
+    ]
 
 
 def polar(angle_deg, radius, cx, cy):
