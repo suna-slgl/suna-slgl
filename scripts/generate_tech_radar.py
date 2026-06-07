@@ -62,6 +62,7 @@ TECH_ALIASES = {
     "bootstrap": "Bootstrap",
     "csharp": "C#",
     "css3": "CSS",
+    "cv2": "OpenCV",
     "docker": "Docker",
     "docker-compose": "Docker",
     "dockerfile": "Docker",
@@ -96,6 +97,11 @@ TECH_ALIASES = {
     "node": "Node.js",
     "node.js": "Node.js",
     "numpy": "NumPy",
+    "opencv": "OpenCV",
+    "opencv-python": "OpenCV",
+    "opencv-python-headless": "OpenCV",
+    "opencv-contrib-python": "OpenCV",
+    "opencv-contrib-python-headless": "OpenCV",
     "pandas": "Pandas",
     "powershell": "PowerShell",
     "postgres": "PostgreSQL",
@@ -164,6 +170,9 @@ def normalize(name):
 
     if key.startswith("next-"):
         return "Next.js"
+
+    if key.startswith("opencv-"):
+        return "OpenCV"
 
     if key.startswith("react-") and key != "react-native":
         return "React"
