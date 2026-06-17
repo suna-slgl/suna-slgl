@@ -37,9 +37,9 @@
   <circle cx="380.0" cy="429.3" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
   <text x="380.0" y="630.0" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">NumPy</text>
   <circle cx="345.47" cy="387.53" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
-  <text x="207.78" y="574.04" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">C++</text>
+  <text x="207.78" y="574.04" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">Docker</text>
   <circle cx="324.13" cy="358.15" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
-  <text x="101.34" y="427.54" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">Docker</text>
+  <text x="101.34" y="427.54" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">C++</text>
   <circle cx="324.13" cy="321.85" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
   <text x="101.34" y="246.46" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">C#</text>
   <circle cx="345.47" cy="292.47" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
