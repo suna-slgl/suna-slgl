@@ -39,10 +39,10 @@
   <circle cx="334.42" cy="402.74" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
   <text x="207.78" y="574.04" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">NumPy</text>
   <circle cx="330.83" cy="355.98" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
-  <text x="101.34" y="427.54" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">beginner-friendly</text>
+  <text x="101.34" y="427.54" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">Docker</text>
   <circle cx="330.83" cy="324.02" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
-  <text x="101.34" y="246.46" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">cpp</text>
+  <text x="101.34" y="246.46" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">C#</text>
   <circle cx="349.61" cy="298.17" r="4.5" fill="#29bda3" stroke="#29bda3" stroke-width="1" filter="url(#softglow)"/>
-  <text x="207.78" y="99.96" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">Docker</text>
+  <text x="207.78" y="99.96" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="#b482ee">OpenCV</text>
   <circle cx="380" cy="340" r="3" fill="#629cf4" opacity="0.75"/>
 </svg>
