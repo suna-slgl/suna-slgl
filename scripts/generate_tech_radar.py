@@ -462,8 +462,6 @@ def collect_repo_technologies(repo):
     except RuntimeError as error:
         print(f"  Warning: could not fetch languages for {full_name}: {error}")
 
-    repo_techs.update(normalize(topic) for topic in repo.get("topics", []))
-
     for manifest in MANIFEST_FILES:
         try:
             content = fetch_manifest(full_name, manifest)
