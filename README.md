@@ -31,6 +31,7 @@
 <br>
 </section>
 
+<!--
 <section align="center"> 
   <div class="markdown-heading" dir="auto">
     <h2 class="heading-element" dir="auto"> Connect With Me🫱🏼‍🫲🏼</h2>
@@ -43,4 +44,4 @@
   </p>
 <br/>
 </section>
-
+-->
