@@ -486,11 +486,13 @@ def get_top_technologies():
 
     totals = Counter()
     display_names = {}
+    repository_count = 0
 
     for repo in repos:
         if repo.get("archived"):
             continue
 
+        repository_count += 1
         repo_techs = deduplicate_names(collect_repo_technologies(repo)).values()
         for tech in repo_techs:
             key = tech.casefold()
@@ -506,9 +508,10 @@ def get_top_technologies():
     if not top:
         return []
 
-    max_count = top[0][1]
+    # max_count = top[0][1]
+    # percentage = round(count / max_count * 100)
     return [
-        (display_names[key], count, round(count / max_count * 100))
+        (display_names[key], count, round(count / repository_count * 100))
         for key, count in top
     ]
 
