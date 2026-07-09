@@ -538,7 +538,7 @@ def generate_svg(items):
     cx, cy = 380, 340
     max_r = 235
     rings = (25, 50, 75, 100)
-    max_percentage = max(1, min(100, max(pct for _, _, pct in items) * 1.1))
+    max_percentage = min(100, max(20, max(pct for _, _, pct in items) * 1.1))
 
     out = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="Top {total} technologies radar chart">',
