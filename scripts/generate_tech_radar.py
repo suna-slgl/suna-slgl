@@ -521,12 +521,12 @@ def polar(angle_deg, radius, cx, cy):
     return round(cx + radius * math.cos(rad), 2), round(cy + radius * math.sin(rad), 2)
 
 
-def polygon_points(items, max_r, cx, cy):
+def polygon_points(items, max_percentage, max_r, cx, cy):
     points = []
     total = len(items)
 
     for index, (_, _, pct) in enumerate(items):
-        x, y = polar(360 / total * index, pct / 100 * max_r, cx, cy)
+        x, y = polar(360 / total * index, pct / max_percentage * max_r, cx, cy)
         points.append(f"{x},{y}")
 
     return " ".join(points)
@@ -538,6 +538,7 @@ def generate_svg(items):
     cx, cy = 380, 340
     max_r = 235
     rings = (25, 50, 75, 100)
+    max_percentage = max(1, min(100, max(pct for _, _, pct in items) * 1.1))
 
     out = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="Top {total} technologies radar chart">',
@@ -563,8 +564,10 @@ def generate_svg(items):
         )
 
         label_x, label_y = polar(180, radius, cx, cy)
+        ring_percentage = max_percentage * pct / 100
+        ring_label = f"{ring_percentage:.1f}".rstrip("0").rstrip(".")
         out.append(
-            f'  <text x="{label_x + 8}" y="{label_y + 4}" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="10" fill="{TOKYO["fg"]}" opacity="0.82">{pct}%</text>'
+            f'  <text x="{label_x + 8}" y="{label_y + 4}" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="10" fill="{TOKYO["fg"]}" opacity="0.82">{ring_label}%</text>'
         )
 
     for index in range(total):
@@ -574,12 +577,12 @@ def generate_svg(items):
         )
 
     out.append(
-        f'  <polygon points="{polygon_points(items, max_r, cx, cy)}" fill="{TOKYO["accent"]}" fill-opacity="0.26" stroke="{TOKYO["accent"]}" stroke-width="2.4" filter="url(#softglow)"/>'
+        f'  <polygon points="{polygon_points(items, max_percentage, max_r, cx, cy)}" fill="{TOKYO["accent"]}" fill-opacity="0.26" stroke="{TOKYO["accent"]}" stroke-width="2.4" filter="url(#softglow)"/>'
     )
 
     for index, (name, count, pct) in enumerate(items):
         angle = 360 / total * index
-        dot_x, dot_y = polar(angle, pct / 100 * max_r, cx, cy)
+        dot_x, dot_y = polar(angle, pct / max_percentage * max_r, cx, cy)
         label_x, label_y = polar(angle, max_r + 58, cx, cy)
 
         if abs(label_x - cx) < 12:
