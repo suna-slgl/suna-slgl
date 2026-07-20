@@ -1,7 +1,6 @@
 import base64
 import html
 import json
-import math
 import os
 import re
 import tomllib
@@ -511,37 +510,34 @@ def get_top_technologies():
     # max_count = top[0][1]
     # percentage = round(count / max_count * 100)
     return [
-        (display_names[key], count, round(count / repository_count * 100))
+        (
+            display_names[key],
+            count,
+            repository_count,
+            round(count / repository_count * 100),
+        )
         for key, count in top
     ]
 
 
-def polar(angle_deg, radius, cx, cy):
-    rad = math.radians(angle_deg - 90)
-    return round(cx + radius * math.cos(rad), 2), round(cy + radius * math.sin(rad), 2)
-
-
-def polygon_points(items, max_percentage, max_r, cx, cy):
-    points = []
-    total = len(items)
-
-    for index, (_, _, pct) in enumerate(items):
-        x, y = polar(360 / total * index, pct / max_percentage * max_r, cx, cy)
-        points.append(f"{x},{y}")
-
-    return " ".join(points)
-
-
 def generate_svg(items):
     total = len(items)
-    width, height = 760, 680
-    cx, cy = 380, 340
-    max_r = 235
-    rings = (25, 50, 75, 100)
-    max_percentage = min(100, max(20, max(pct for _, _, pct in items) * 1.1))
+    width = 760
+    padding = 34
+    header_height = 48
+    row_height = 44
+    footer_padding = 24
+    height = padding * 2 + header_height + row_height * total + footer_padding
+    table_x = padding
+    table_width = width - padding * 2
+    technology_width = 230
+    coverage_width = 210
+    usage_width = table_width - technology_width - coverage_width
+    usage_bar_width = usage_width - 16
+    usage_bar_height = 10
 
     out = [
-        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="Top {total} technologies radar chart">',
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="Top {total} technologies repository coverage table">',
         "  <defs>",
         '    <filter id="softglow" x="-25%" y="-25%" width="150%" height="150%">',
         '      <feGaussianBlur in="SourceGraphic" stdDeviation="1.8" result="blur"/>',
@@ -550,62 +546,51 @@ def generate_svg(items):
         "  </defs>",
     ]
 
-    for pct in rings:
-        radius = max_r * pct / 100
-        points = []
-
-        for index in range(total):
-            x, y = polar(360 / total * index, radius, cx, cy)
-            points.append(f"{x},{y}")
-
-        opacity = 0.35 if pct < 100 else 0.75
-        out.append(
-            f'  <polygon points="{" ".join(points)}" fill="none" stroke="{TOKYO["grid"]}" stroke-width="0.9" opacity="{opacity}"/>'
-        )
-
-        label_x, label_y = polar(180, radius, cx, cy)
-        ring_percentage = max_percentage * pct / 100
-        ring_label = f"{ring_percentage:.1f}".rstrip("0").rstrip(".")
-        out.append(
-            f'  <text x="{label_x + 8}" y="{label_y + 4}" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="10" fill="{TOKYO["fg"]}" opacity="0.82">{ring_label}%</text>'
-        )
-
-    for index in range(total):
-        x_end, y_end = polar(360 / total * index, max_r, cx, cy)
-        out.append(
-            f'  <line x1="{cx}" y1="{cy}" x2="{x_end}" y2="{y_end}" stroke="{TOKYO["grid"]}" stroke-width="0.8" opacity="0.38"/>'
-        )
+    font = "-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif"
+    header_y = padding + 20
+    first_row_y = padding + header_height
+    technology_x = table_x + 12
+    coverage_x = table_x + technology_width
+    usage_x = coverage_x + coverage_width
 
     out.append(
-        f'  <polygon points="{polygon_points(items, max_percentage, max_r, cx, cy)}" fill="{TOKYO["accent"]}" fill-opacity="0.26" stroke="{TOKYO["accent"]}" stroke-width="2.4" filter="url(#softglow)"/>'
+        f'  <line x1="{table_x}" y1="{first_row_y - 12}" x2="{table_x + table_width}" y2="{first_row_y - 12}" stroke="{TOKYO["grid"]}" stroke-width="1" opacity="0.48"/>'
+    )
+    out.append(
+        f'  <text x="{technology_x}" y="{header_y}" font-family="{font}" font-size="13" font-weight="700" fill="{TOKYO["fg"]}">Technology</text>'
+    )
+    out.append(
+        f'  <text x="{coverage_x}" y="{header_y}" font-family="{font}" font-size="13" font-weight="700" fill="{TOKYO["fg"]}">Repository Coverage</text>'
+    )
+    out.append(
+        f'  <text x="{usage_x}" y="{header_y}" font-family="{font}" font-size="13" font-weight="700" fill="{TOKYO["fg"]}">Usage</text>'
     )
 
-    for index, (name, count, pct) in enumerate(items):
-        angle = 360 / total * index
-        dot_x, dot_y = polar(angle, pct / max_percentage * max_r, cx, cy)
-        label_x, label_y = polar(angle, max_r + 58, cx, cy)
-
-        if abs(label_x - cx) < 12:
-            anchor = "middle"
-        elif label_x < cx:
-            anchor = "end"
-        else:
-            anchor = "start"
-
+    for index, (name, count, repository_count, pct) in enumerate(items):
+        row_y = first_row_y + index * row_height
+        text_y = row_y + 27
+        bar_y = row_y + 18
+        bar_fill_width = round(usage_bar_width * pct / 100, 2)
         safe_name = html.escape(name)
+        coverage = f"{count}/{repository_count} repos - {pct}%"
+
         out.append(
-            f'  <circle cx="{dot_x}" cy="{dot_y}" r="4.5" fill="{TOKYO["accent"]}" stroke="{TOKYO["accent"]}" stroke-width="1" filter="url(#softglow)"/>'
+            f'  <line x1="{table_x}" y1="{row_y + row_height}" x2="{table_x + table_width}" y2="{row_y + row_height}" stroke="{TOKYO["grid"]}" stroke-width="0.8" opacity="0.2"/>'
         )
         out.append(
-            f'  <text x="{label_x}" y="{label_y - 3}" text-anchor="{anchor}" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,monospace" font-size="12" font-weight="700" fill="{TOKYO["label"]}">{safe_name}</text>'
+            f'  <text x="{technology_x}" y="{text_y}" font-family="{font}" font-size="14" font-weight="700" fill="{TOKYO["label"]}">{safe_name}</text>'
+        )
+        out.append(
+            f'  <text x="{coverage_x}" y="{text_y}" font-family="{font}" font-size="13" fill="{TOKYO["fg"]}" opacity="0.9">{coverage}</text>'
+        )
+        out.append(
+            f'  <rect x="{usage_x}" y="{bar_y}" width="{usage_bar_width}" height="{usage_bar_height}" rx="5" fill="{TOKYO["grid"]}" opacity="0.18"/>'
+        )
+        out.append(
+            f'  <rect x="{usage_x}" y="{bar_y}" width="{bar_fill_width}" height="{usage_bar_height}" rx="5" fill="{TOKYO["accent"]}" filter="url(#softglow)"/>'
         )
 
-    out.extend(
-        [
-            f'  <circle cx="{cx}" cy="{cy}" r="3" fill="{TOKYO["grid"]}" opacity="0.75"/>',
-            "</svg>",
-        ]
-    )
+    out.append("</svg>")
 
     return "\n".join(out)
 
@@ -621,9 +606,9 @@ if __name__ == "__main__":
 
     print(f"\nTop {len(technologies)} technologies:")
 
-    for name, count, pct in technologies:
+    for name, count, repository_count, pct in technologies:
         bar = "#" * max(1, pct // 5)
-        print(f"  {name:<20} {count:>3} repos  {bar}")
+        print(f"  {name:<20} {count:>3}/{repository_count:<3} repos  {pct:>3}%  {bar}")
 
     os.makedirs(os.path.dirname(OUTPUT_FILE) or ".", exist_ok=True)
 

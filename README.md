@@ -9,12 +9,12 @@
 </section>
 
 <section align="center">
-  <h2 align="center">Code Constellation</h2>
+  <h2 align="center">Technology Coverage</h2>
 
   <img
     src="./assets/tech-radar.svg"
-    width="650"
-    alt="Code Constellation"
+    width="720"
+    alt="Technology Coverage"
   />
   <br>
 </section>
