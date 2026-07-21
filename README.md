@@ -9,13 +9,15 @@
 </section>
 
 <section align="center">
-  <h2 align="center">Technology Coverage</h2>
+  <h2 align="center">Most Used Technologies</h2>
 
   <img
     src="./assets/tech-radar.svg"
     width="720"
-    alt="Technology Coverage"
+    alt="Most Used Technologies"
   />
+  <br>
+  <sub>Relative Usage is calculated by comparing each technology’s repository count with the repository count of the most used technology.</sub>
   <br>
 </section>
 

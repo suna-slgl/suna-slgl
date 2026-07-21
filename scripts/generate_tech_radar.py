@@ -507,15 +507,15 @@ def get_top_technologies():
     if not top:
         return []
 
-    # max_count = top[0][1]
-    # percentage = round(count / max_count * 100)
-    # Repository Coverage = Teknolojinin geçtiği aktif repo sayısı / Toplam aktif repo sayısı × 100
+    max_count = top[0][1]
+    # Maksimuma göre normalizasyon:
+    # Yüzde = Teknolojinin geçtiği repo sayısı / En çok geçen teknolojinin repo sayısı × 100
     return [
         (
             display_names[key],
             count,
             repository_count,
-            round(count / repository_count * 100),
+            round(count / max_count * 100),
         )
         for key, count in top
     ]
@@ -538,7 +538,7 @@ def generate_svg(items):
     usage_bar_height = 10
 
     out = [
-        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="Top {total} technologies repository coverage table">',
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="Top {total} technologies normalized usage table">',
         "  <defs>",
         '    <filter id="softglow" x="-25%" y="-25%" width="150%" height="150%">',
         '      <feGaussianBlur in="SourceGraphic" stdDeviation="1.8" result="blur"/>',
@@ -561,7 +561,7 @@ def generate_svg(items):
         f'  <text x="{technology_x}" y="{header_y}" font-family="{font}" font-size="13" font-weight="700" fill="{TOKYO["fg"]}">Technology</text>'
     )
     out.append(
-        f'  <text x="{coverage_x}" y="{header_y}" font-family="{font}" font-size="13" font-weight="700" fill="{TOKYO["fg"]}">Repository Coverage</text>'
+        f'  <text x="{coverage_x}" y="{header_y}" font-family="{font}" font-size="13" font-weight="700" fill="{TOKYO["fg"]}">Relative Usage</text>'
     )
     out.append(
         f'  <text x="{usage_x}" y="{header_y}" font-family="{font}" font-size="13" font-weight="700" fill="{TOKYO["fg"]}">Usage</text>'
@@ -573,7 +573,7 @@ def generate_svg(items):
         bar_y = row_y + 18
         bar_fill_width = round(usage_bar_width * pct / 100, 2)
         safe_name = html.escape(name)
-        coverage = f"{count}/{repository_count} repos - {pct}%"
+        usage = f"{pct}%"
 
         out.append(
             f'  <line x1="{table_x}" y1="{row_y + row_height}" x2="{table_x + table_width}" y2="{row_y + row_height}" stroke="{TOKYO["grid"]}" stroke-width="0.8" opacity="0.2"/>'
@@ -582,7 +582,7 @@ def generate_svg(items):
             f'  <text x="{technology_x}" y="{text_y}" font-family="{font}" font-size="14" font-weight="700" fill="{TOKYO["label"]}">{safe_name}</text>'
         )
         out.append(
-            f'  <text x="{coverage_x}" y="{text_y}" font-family="{font}" font-size="13" fill="{TOKYO["fg"]}" opacity="0.9">{coverage}</text>'
+            f'  <text x="{coverage_x}" y="{text_y}" font-family="{font}" font-size="13" fill="{TOKYO["fg"]}" opacity="0.9">{usage}</text>'
         )
         out.append(
             f'  <rect x="{usage_x}" y="{bar_y}" width="{usage_bar_width}" height="{usage_bar_height}" rx="5" fill="{TOKYO["grid"]}" opacity="0.18"/>'
