@@ -509,6 +509,7 @@ def get_top_technologies():
 
     # max_count = top[0][1]
     # percentage = round(count / max_count * 100)
+    # Repository Coverage = Teknolojinin geçtiği aktif repo sayısı / Toplam aktif repo sayısı × 100
     return [
         (
             display_names[key],
