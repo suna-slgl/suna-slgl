@@ -543,6 +543,7 @@ def generate_svg(items):
     usage_width = table_width - technology_width - coverage_width
     usage_bar_width = usage_width - 16
     usage_bar_height = 10
+    usage_bar_scale = 80
 
     out = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="Top {total} languages and technologies repository presence table">',
@@ -578,7 +579,8 @@ def generate_svg(items):
         row_y = first_row_y + index * row_height
         text_y = row_y + 27
         bar_y = row_y + 18
-        bar_fill_width = round(usage_bar_width * pct / 100, 2)
+        bar_ratio = min(pct / usage_bar_scale, 1)
+        bar_fill_width = round(usage_bar_width * bar_ratio, 2)
         safe_name = html.escape(name)
         usage = f"{format_percentage(pct)}%"
 
