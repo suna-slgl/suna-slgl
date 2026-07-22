@@ -507,15 +507,14 @@ def get_top_technologies():
     if not top:
         return []
 
-    max_count = top[0][1]
-    # Maksimuma göre normalizasyon:
-    # Yüzde = Teknolojinin geçtiği repo sayısı / En çok geçen teknolojinin repo sayısı × 100
+    # Repository Presence:
+    # Yüzde = Teknolojinin veya dilin geçtiği aktif repo sayısı / Toplam aktif repo sayısı × 100
     return [
         (
             display_names[key],
             count,
             repository_count,
-            truncate_percentage(count / max_count * 100),
+            truncate_percentage(count / repository_count * 100),
         )
         for key, count in top
     ]
@@ -546,7 +545,7 @@ def generate_svg(items):
     usage_bar_height = 10
 
     out = [
-        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="Top {total} technologies normalized usage table">',
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="Top {total} languages and technologies repository presence table">',
         "  <defs>",
         '    <filter id="softglow" x="-25%" y="-25%" width="150%" height="150%">',
         '      <feGaussianBlur in="SourceGraphic" stdDeviation="1.8" result="blur"/>',
@@ -566,10 +565,10 @@ def generate_svg(items):
         f'  <line x1="{table_x}" y1="{first_row_y - 12}" x2="{table_x + table_width}" y2="{first_row_y - 12}" stroke="{TOKYO["grid"]}" stroke-width="1" opacity="0.48"/>'
     )
     out.append(
-        f'  <text x="{technology_x}" y="{header_y}" font-family="{font}" font-size="13" font-weight="700" fill="{TOKYO["fg"]}">Technology</text>'
+        f'  <text x="{technology_x}" y="{header_y}" font-family="{font}" font-size="13" font-weight="700" fill="{TOKYO["fg"]}">Languages &amp; Technologies</text>'
     )
     out.append(
-        f'  <text x="{coverage_x}" y="{header_y}" font-family="{font}" font-size="13" font-weight="700" fill="{TOKYO["fg"]}">Relative Usage</text>'
+        f'  <text x="{coverage_x}" y="{header_y}" font-family="{font}" font-size="13" font-weight="700" fill="{TOKYO["fg"]}">Repository Presence</text>'
     )
     out.append(
         f'  <text x="{usage_x}" y="{header_y}" font-family="{font}" font-size="13" font-weight="700" fill="{TOKYO["fg"]}">Usage</text>'

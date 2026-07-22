@@ -9,15 +9,15 @@
 </section>
 
 <section align="center">
-  <h2 align="center">Most Used Technologies</h2>
+  <h2 align="center">Most Used Languages & Technologies</h2>
 
   <img
     src="./assets/tech-radar.svg"
     width="720"
-    alt="Most Used Technologies"
+    alt="Most Used Languages & Technologies"
   />
   <br>
-  <sub>Relative Usage is calculated by comparing each technology’s repository count with the repository count of the most used technology.</sub>
+  <sub>Repository Presence indicates how often each technology or language appears across active repositories and is refreshed daily from repository data.</sub>
   <br>
 </section>
 
