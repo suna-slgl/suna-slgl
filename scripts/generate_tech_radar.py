@@ -515,10 +515,18 @@ def get_top_technologies():
             display_names[key],
             count,
             repository_count,
-            round(count / max_count * 100),
+            truncate_percentage(count / max_count * 100),
         )
         for key, count in top
     ]
+
+
+def truncate_percentage(value):
+    return int(value * 100) / 100
+
+
+def format_percentage(value):
+    return f"{value:.2f}"
 
 
 def generate_svg(items):
@@ -573,7 +581,7 @@ def generate_svg(items):
         bar_y = row_y + 18
         bar_fill_width = round(usage_bar_width * pct / 100, 2)
         safe_name = html.escape(name)
-        usage = f"{pct}%"
+        usage = f"{format_percentage(pct)}%"
 
         out.append(
             f'  <line x1="{table_x}" y1="{row_y + row_height}" x2="{table_x + table_width}" y2="{row_y + row_height}" stroke="{TOKYO["grid"]}" stroke-width="0.8" opacity="0.2"/>'
@@ -608,8 +616,10 @@ if __name__ == "__main__":
     print(f"\nTop {len(technologies)} technologies:")
 
     for name, count, repository_count, pct in technologies:
-        bar = "#" * max(1, pct // 5)
-        print(f"  {name:<20} {count:>3}/{repository_count:<3} repos  {pct:>3}%  {bar}")
+        bar = "#" * max(1, int(pct // 5))
+        print(
+            f"  {name:<20} {count:>3}/{repository_count:<3} repos  {format_percentage(pct):>6}%  {bar}"
+        )
 
     os.makedirs(os.path.dirname(OUTPUT_FILE) or ".", exist_ok=True)
 
