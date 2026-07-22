@@ -579,10 +579,10 @@ def generate_svg(items):
         row_y = first_row_y + index * row_height
         text_y = row_y + 27
         bar_y = row_y + 18
-        bar_ratio = min(pct / usage_bar_scale, 1)
-        bar_fill_width = round(usage_bar_width * bar_ratio, 2)
+        scaled_pct = min(pct / usage_bar_scale * 100, 100)
+        bar_fill_width = round(usage_bar_width * scaled_pct / 100, 2)
         safe_name = html.escape(name)
-        usage = f"{format_percentage(pct)}%"
+        usage = f"{format_percentage(scaled_pct)}%"
 
         out.append(
             f'  <line x1="{table_x}" y1="{row_y + row_height}" x2="{table_x + table_width}" y2="{row_y + row_height}" stroke="{TOKYO["grid"]}" stroke-width="0.8" opacity="0.2"/>'
