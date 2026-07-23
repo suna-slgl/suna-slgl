@@ -30,12 +30,12 @@
   <rect x="474" y="232" width="236" height="10" rx="5" fill="#629cf4" opacity="0.18"/>
   <rect x="474" y="232" width="65.55" height="10" rx="5" fill="#29bda3" filter="url(#softglow)"/>
   <line x1="34" y1="302" x2="726" y2="302" stroke="#629cf4" stroke-width="0.8" opacity="0.2"/>
-  <text x="46" y="285" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="14" font-weight="700" fill="#b482ee">Flask</text>
+  <text x="46" y="285" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="14" font-weight="700" fill="#b482ee">NumPy</text>
   <text x="264" y="285" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="13" fill="#c0caf5" opacity="0.9">20.82%</text>
   <rect x="474" y="276" width="236" height="10" rx="5" fill="#629cf4" opacity="0.18"/>
   <rect x="474" y="276" width="49.15" height="10" rx="5" fill="#29bda3" filter="url(#softglow)"/>
   <line x1="34" y1="346" x2="726" y2="346" stroke="#629cf4" stroke-width="0.8" opacity="0.2"/>
-  <text x="46" y="329" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="14" font-weight="700" fill="#b482ee">NumPy</text>
+  <text x="46" y="329" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="14" font-weight="700" fill="#b482ee">Flask</text>
   <text x="264" y="329" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="13" fill="#c0caf5" opacity="0.9">20.82%</text>
   <rect x="474" y="320" width="236" height="10" rx="5" fill="#629cf4" opacity="0.18"/>
   <rect x="474" y="320" width="49.15" height="10" rx="5" fill="#29bda3" filter="url(#softglow)"/>
