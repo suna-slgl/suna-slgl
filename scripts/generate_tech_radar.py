@@ -508,12 +508,22 @@ def get_top_technologies():
     if not top:
         return []
 
-    # max_count = top[0][1]
-    # percentage = round(count / max_count * 100)
+    max_count = top[0][1]
+
+    # Relative Usage:
+    # Yüzde = Teknolojinin veya dilin geçtiği repo sayısı / En çok geçen teknolojinin repo sayısı × 100
     return [
-        (display_names[key], count, round(count / repository_count * 100))
+        (display_names[key], count, truncate_percentage(count / max_count * 100))
         for key, count in top
     ]
+
+
+def truncate_percentage(value):
+    return int(value * 100) / 100
+
+
+def format_percentage(value):
+    return f"{value:.2f}"
 
 
 def polar(angle_deg, radius, cx, cy):
@@ -565,7 +575,7 @@ def generate_svg(items):
 
         label_x, label_y = polar(180, radius, cx, cy)
         ring_percentage = max_percentage * pct / 100
-        ring_label = f"{ring_percentage:.1f}".rstrip("0").rstrip(".")
+        ring_label = format_percentage(truncate_percentage(ring_percentage))
         out.append(
             f'  <text x="{label_x + 8}" y="{label_y + 4}" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="10" fill="{TOKYO["fg"]}" opacity="0.82">{ring_label}%</text>'
         )
@@ -622,8 +632,8 @@ if __name__ == "__main__":
     print(f"\nTop {len(technologies)} technologies:")
 
     for name, count, pct in technologies:
-        bar = "#" * max(1, pct // 5)
-        print(f"  {name:<20} {count:>3} repos  {bar}")
+        bar = "#" * max(1, int(pct // 5))
+        print(f"  {name:<20} {count:>3} repos  {format_percentage(pct):>6}%  {bar}")
 
     os.makedirs(os.path.dirname(OUTPUT_FILE) or ".", exist_ok=True)
 
