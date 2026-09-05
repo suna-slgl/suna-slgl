@@ -14,6 +14,8 @@ from collections import Counter
 GITHUB_TOKEN = os.environ.get("GH_TOKEN", "").strip()
 TOP_N = int(os.environ.get("TOP_N", "10"))
 OUTPUT_FILE = os.environ.get("OUTPUT_FILE", "assets/tech-radar.svg")
+RADAR_SCALE_FILL_FACTOR = 0.8
+MIN_RADAR_SCALE = 20
 
 TOKYO_COLORS = [
     "#7aa2f7",
@@ -536,7 +538,8 @@ def polygon_points(items, max_percentage, max_r, cx, cy):
     total = len(items)
 
     for index, (_, _, pct) in enumerate(items):
-        x, y = polar(360 / total * index, pct / max_percentage * max_r, cx, cy)
+        scaled_pct = min(pct, max_percentage)
+        x, y = polar(360 / total * index, scaled_pct / max_percentage * max_r, cx, cy)
         points.append(f"{x},{y}")
 
     return " ".join(points)
@@ -548,7 +551,10 @@ def generate_svg(items):
     cx, cy = 380, 340
     max_r = 235
     rings = (25, 50, 75, 100)
-    max_percentage = min(100, max(20, max(pct for _, _, pct in items) * 1.1))
+    max_percentage = min(
+        100,
+        max(MIN_RADAR_SCALE, max(pct for _, _, pct in items) * RADAR_SCALE_FILL_FACTOR),
+    )
 
     out = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="Top {total} technologies radar chart">',
@@ -592,7 +598,8 @@ def generate_svg(items):
 
     for index, (name, count, pct) in enumerate(items):
         angle = 360 / total * index
-        dot_x, dot_y = polar(angle, pct / max_percentage * max_r, cx, cy)
+        scaled_pct = min(pct, max_percentage)
+        dot_x, dot_y = polar(angle, scaled_pct / max_percentage * max_r, cx, cy)
         label_x, label_y = polar(angle, max_r + 58, cx, cy)
 
         if abs(label_x - cx) < 12:
