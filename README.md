@@ -9,12 +9,12 @@
 </section>
 
 <section align="center">
-  <h2 align="center">Most Used Languages & Technologies</h2>
+  <h2 align="center">Most Used Technologies</h2>
 
   <img
     src="./assets/tech-radar.svg"
-    width="720"
-    alt="Most Used Languages & Technologies"
+    width="650"
+    alt="Most Used Technologies"
   />
   <br>
   <sub>Repository Presence indicates how often each technology or language appears across active repositories and is refreshed daily from repository data.</sub>
